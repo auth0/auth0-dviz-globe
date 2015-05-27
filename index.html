@@ -1,61 +1,9 @@
 <!DOCTYPE HTML>
 <html lang="en">
   <head>
-    <title>Wikidata globe</title>
+    <title>Auth0 globe</title>
     <meta charset="utf-8">
-    <style type="text/css">
-      html {
-        height: 100%;
-      }
-      body {
-        margin: 0;
-        padding: 0;
-        background: #000000 url(loading.gif) center center no-repeat;
-        color: #ffffff;
-        font-family: sans-serif;
-        font-size: 13px;
-        line-height: 20px;
-        height: 100%;
-      }
-
-      #info {
-        font-size: 11px;
-        position: absolute;
-        bottom: 5px;
-        background-color: rgba(0,0,0,0.8);
-        border-radius: 3px;
-        right: 10px;
-        padding: 10px;
-
-      }
-
-      a {
-        color: #aaa;
-        text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-
-      .bull {
-        padding: 0 5px;
-        color: #555;
-      }
-      .bull:hover {
-        color: #fff;
-      }
-
-      #title {
-        position: absolute;
-        top: 20px;
-        width: 270px;
-        left: 20px;
-        background-color: rgba(0,0,0,0.2);
-        border-radius: 3px;
-        font: 20px Gill Sans MT;
-        padding: 10px;
-      }
-    </style>
+    <link href="main.css" />
   </head>
   <body>
 
@@ -70,60 +18,7 @@
   <script type="text/javascript" src="third-party/Three/RequestAnimationFrame.js"></script>
   <script type="text/javascript" src="third-party/Three/Detector.js"></script>
   <script type="text/javascript" src="globe.js"></script>
-  <script type="text/javascript">
-
-function buildCollectionName(d) {
-  return 'hour' + d.getUTCFullYear() + (d.getUTCMonth() + 1) + d.getUTCDate() + d.getUTCHours();  
-}
-
-function PlayTimelapse() {
-  $('#play').attr('disabled',true).val('Playing...');
-
-  var index = 23;
-  $('#timelapse').val(23 - index);
-  loadData(index);
-  var playInterval = setInterval(function() {
-    index--;
-    loadData(index);
-    $('#timelapse').val(23 - index);
-
-    if (index == 0) {
-      $('#play').removeAttr('disabled').val('Play');
-      clearInterval(playInterval);
-    }
-  }, 1000);
-}
-
-if(!Detector.webgl){
-	Detector.addGetWebGLMessage();
-} else {
-	var container = document.getElementById('container');
-	var globe = new DAT.Globe(container);
-
-	var loadData = function(value) {
-
-    var now = new Date();
-
-    now.setHours(now.getHours() - parseInt(value));
-
-    $.ajax( "https://auth0-logins-processor.herokuapp.com/list", {data:{filter:buildCollectionName(now)}})
-      .done(function(data) {
-        window.data = data;
-        globe.clearData();
-        globe.addJSONData(data);
-        globe.createPoints();
-        globe.animate();
-      })
-      .fail(function() {
-        alert( "error" );
-      });
-
-	};
-	
-	loadData(0);
-}
-
-  </script>
+  <script type="text/javascript" src="main.js"></script>
 
   </body>
 
