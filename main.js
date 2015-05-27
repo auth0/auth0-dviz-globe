@@ -1,31 +1,38 @@
+var data = [];
+
 function buildCollectionName(d) {
   return 'hour' + d.getUTCFullYear() + (d.getUTCMonth() + 1) + d.getUTCDate() + d.getUTCHours();  
 }
 
 function PlayTimelapse() {
   $('#play').attr('disabled',true).val('Playing...');
-
-  initTimelapse(23);
+  initTimelapse(0);
 }
 
 function initTimelapse(index) {
-  setTimeout(function(index){
-    return timelapseInterval;
+
+  console.log('initTimelapse',index);
+
+  setTimeout(function(i){
+
+    var index = i;
+    return function() {
+        loadData(index);
+        $('#timelapse').val(23 - index);
+
+        if (index == 23) {
+          $('#play').removeAttr('disabled').val('Play');
+        }
+        else {
+          initTimelapse(index+1);
+        }
+      };
+
   }(index), 1000);
+
 }
 
-function timelapseInterval() {
-  index--;
-  loadData(index);
-  $('#timelapse').val(23 - index);
 
-  if (index == 0) {
-    $('#play').removeAttr('disabled').val('Play');
-  }
-  else {
-    initTimelapse(index);
-  }
-}
 
 if(!Detector.webgl){
 	Detector.addGetWebGLMessage();
@@ -33,25 +40,35 @@ if(!Detector.webgl){
 	var container = document.getElementById('container');
 	var globe = new DAT.Globe(container);
 
-	var loadData = function(value) {
+  preloadData(23, new Date(), function(index) {
+    if (index == 23) { loadData(index); }
+  });
+}
 
-    var now = new Date();
+function loadData(index) {
+  console.log('loadData', index, data[index]);
+  globe.clearData();
+  globe.addJSONData(data[index]);
+  globe.createPoints();
+  globe.animate();
+}
 
-    now.setHours(now.getHours() - parseInt(value));
+function preloadData(index, date, afterLoadCallback) {
+  if (index == -1) return;
 
-    $.ajax( "https://auth0-logins-processor.herokuapp.com/list", {data:{filter:buildCollectionName(now)}})
-      .done(function(data) {
-        window.data = data;
-        globe.clearData();
-        globe.addJSONData(data);
-        globe.createPoints();
-        globe.animate();
+  console.log('preloadData',index, date);
+  $.ajax( "https://auth0-logins-processor.herokuapp.com/list", {data:{filter:buildCollectionName(date)}})
+      .done(function(d) {
+        console.log('ajax', index, d);
+        data[index] = d;
+        afterLoadCallback(index);
+
+        date.setHours(date.getHours() -1);
+        preloadData(index - 1, date, afterLoadCallback);
+
       })
       .fail(function() {
         alert( "error" );
       });
 
-	};
-	
-	loadData(0);
 }
