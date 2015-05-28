@@ -206,7 +206,7 @@ DAT.Globe = function(container, colorFn) {
       lat = data[i].geo.lat;
       lng = data[i].geo.lng;
       value = data[i].devices[Object.keys(data[i].devices)[0]];
-      color = colorFn(value);
+      color = new THREE.Color(0xff9800);
       size = 0; 
       addPoint(lat, lng, size, color, subgeo);
     }
