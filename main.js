@@ -1,3 +1,15 @@
+var stats = new Stats();
+stats.setMode(1); // 0: fps, 1: ms
+
+// align top-left
+stats.domElement.style.position = 'absolute';
+stats.domElement.style.left = '0px';
+stats.domElement.style.bottom = '0px';
+
+document.body.appendChild( stats.domElement );
+
+//================================================================
+
 var data = [];
 var currentFilter = noFilter;
 
@@ -74,11 +86,19 @@ if(!Detector.webgl){
   });
 }
 
+var animated = false;
+
 function loadData(index) {
+
   globe.clearData();
   globe.addJSONData(currentFilter(data[index]));
   globe.createPoints();
-  globe.animate();
+  
+  if (!animated) {
+    animated = true;
+    globe.animate();
+  }
+
 }
 
 function preloadData(index, date, afterLoadCallback) {
@@ -97,3 +117,5 @@ function preloadData(index, date, afterLoadCallback) {
       });
 
 }
+
+//================================================================

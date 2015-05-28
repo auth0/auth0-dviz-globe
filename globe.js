@@ -191,7 +191,7 @@ DAT.Globe = function(container, colorFn) {
       lat = data[i];
       lng = data[i + 1];
       color = colorFn(data[i+2]);
-      size = 0; // data[i + 2]; // CHANGED
+      size = 1; // data[i + 2]; // CHANGED
       addPoint(lat, lng, size, color, subgeo);
     }
     this._baseGeometry = subgeo;
@@ -326,6 +326,8 @@ DAT.Globe = function(container, colorFn) {
   function animate() {
     requestAnimationFrame(animate);
     render();
+
+    stats.update();
   }
 
   function render() {
