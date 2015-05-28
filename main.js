@@ -6,22 +6,22 @@ function buildCollectionName(d) {
 
 function PlayTimelapse() {
   $('#play').attr('disabled',true).val('Playing...');
+  $('#timelapse').attr('disabled',true);
   initTimelapse(0);
 }
 
 function initTimelapse(index) {
-
-  console.log('initTimelapse',index);
 
   setTimeout(function(i){
 
     var index = i;
     return function() {
         loadData(index);
-        $('#timelapse').val(23 - index);
+        $('#timelapse').val(index);
 
         if (index == 23) {
           $('#play').removeAttr('disabled').val('Play');
+          $('#timelapse').removeAttr('disabled');
         }
         else {
           initTimelapse(index+1);
@@ -32,8 +32,6 @@ function initTimelapse(index) {
 
 }
 
-
-
 if(!Detector.webgl){
 	Detector.addGetWebGLMessage();
 } else {
@@ -41,12 +39,17 @@ if(!Detector.webgl){
 	var globe = new DAT.Globe(container);
 
   preloadData(23, new Date(), function(index) {
-    if (index == 23) { loadData(index); }
+    if (index == 23) { 
+      loadData(index); 
+    }
+    if (index == 0) { 
+      $('#play').removeAttr('disabled');
+      $('#timelapse').removeAttr('disabled');
+    }
   });
 }
 
 function loadData(index) {
-  console.log('loadData', index, data[index]);
   globe.clearData();
   globe.addJSONData(data[index]);
   globe.createPoints();
@@ -55,11 +58,8 @@ function loadData(index) {
 
 function preloadData(index, date, afterLoadCallback) {
   if (index == -1) return;
-
-  console.log('preloadData',index, date);
   $.ajax( "https://auth0-logins-processor.herokuapp.com/list", {data:{filter:buildCollectionName(date)}})
       .done(function(d) {
-        console.log('ajax', index, d);
         data[index] = d;
         afterLoadCallback(index);
 
