@@ -64,7 +64,7 @@ DAT.Globe = function(container, colorFn) {
         'varying vec3 vNormal;',
         'void main() {',
           'float intensity = pow( 0.8 - dot( vNormal, vec3( 0, 0, 1.0 ) ), 12.0 );',
-          'gl_FragColor = vec4( 0.1, 0.2, 0.5, 0.7 ) * intensity;',
+          'gl_FragColor = vec4( 1.0, 1.0, 1.0, 1.0 ) * intensity;',
         '}'
       ].join('\n')
     }
@@ -145,7 +145,7 @@ DAT.Globe = function(container, colorFn) {
     mesh.updateMatrix();
     sceneAtmosphere.addObject(mesh);
 
-    geometry = new THREE.Cube(0.75, 0.75, 1, 1, 1, 1, null, false, { px: true,
+    geometry = new THREE.Cube(1, 1, 1, 1, 1, 1, null, false, { px: true,
           nx: true, py: true, ny: true, pz: false, nz: true});
 
     for (var i = 0; i < geometry.vertices.length; i++) {
@@ -222,6 +222,27 @@ DAT.Globe = function(container, colorFn) {
               morphTargets: false
       }));
       scene.addObject(points);
+
+      transitions.push(smoothIn(points));
+    }
+  }
+
+  function smoothIn(newMesh) {
+    newMesh.scale.set(2.1, 2.1, 2.1);
+    return function() {
+      return smoothInTransition(newMesh);
+    }
+  }
+
+  function smoothInTransition(newMesh, value) {
+    console.log(value);
+    if (value == 100) return;
+
+    value = value || 0;
+    newMesh.scale.set(0.999,0.999,0.999);
+
+    return function() { 
+      return smoothInTransition(newMesh, value + 1);
     }
   }
 
@@ -323,7 +344,18 @@ DAT.Globe = function(container, colorFn) {
     distanceTarget = distanceTarget < 350 ? 350 : distanceTarget;
   }
 
+  var transitions = [];
+
   function animate() {
+    var newTransitions = []
+    console.log('animate');
+    transitions.forEach(function(t) {
+      console.log('call transition');
+      var nt = t();
+      if (nt) newTransitions.push(nt);
+    });
+    transitions = newTransitions;
+
     requestAnimationFrame(animate);
     render();
 
