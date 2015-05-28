@@ -12,6 +12,14 @@ body {
   height: 100%;
 }
 
+#loading {
+  position: absolute;
+  top: 30px;
+  left: 20px;
+  font-size: 18px;
+  color: #ffffff;
+}
+
 #info {
   font-size: 11px;
   position: absolute;

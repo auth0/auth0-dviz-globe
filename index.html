@@ -10,9 +10,18 @@
   <input disabled=true type="range" id="timelapse" value="23" max="23" min="1" oninput="loadData(this.value);" onchange="loadData(this.value);" />
   <input disabled=true type="button" id="play" onclick="PlayTimelapse()" value="Play" />
 
+  <input type="button" id="play" onclick="updateFilter(strategyFilter)" value="Filter Facebook" /> 
+
+  <input type="button" id="play" onclick="updateFilter(deviceFilter)" value="Filter Mac OS X" /> 
+
+  <input type="button" id="play" onclick="updateFilter(noFilter)" value="No Filter" />  
+
   <div id="container"></div>
+
+  <div id="loading" style="display:none;"></div>
   
-  <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.9.3/lodash.min.js"></script>
   <script type="text/javascript" src="third-party/Three/ThreeWebGL.js"></script>
   <script type="text/javascript" src="third-party/Three/ThreeExtras.js"></script>
   <script type="text/javascript" src="third-party/Three/RequestAnimationFrame.js"></script>

@@ -1,4 +1,24 @@
 var data = [];
+var currentFilter = noFilter;
+
+function noFilter(arr) {
+  return arr;
+}
+function deviceFilter(arr) {
+  return _.filter(arr, function(e) {
+    return (e.devices['Mac OS X'] != undefined);
+  });
+}
+function strategyFilter(arr) {
+  return _.filter(arr, function(e) {
+    return (e.strategies['facebook'] != undefined);
+  });
+}
+
+function updateFilter(filter) {
+  currentFilter = filter;
+  loadData($('#timelapse').val());
+}
 
 function buildCollectionName(d) {
   return 'hour' + d.getUTCFullYear() + (d.getUTCMonth() + 1) + d.getUTCDate() + d.getUTCHours();  
@@ -38,20 +58,25 @@ if(!Detector.webgl){
 	var container = document.getElementById('container');
 	var globe = new DAT.Globe(container);
 
+  $('#loading').show();
   preloadData(23, new Date(), function(index) {
+
+    $('#loading').html( "Loading " + Math.ceil((23-index) * 100/23) + '%');
+
     if (index == 23) { 
       loadData(index); 
     }
     if (index == 0) { 
       $('#play').removeAttr('disabled');
       $('#timelapse').removeAttr('disabled');
+      $('#loading').hide();
     }
   });
 }
 
 function loadData(index) {
   globe.clearData();
-  globe.addJSONData(data[index]);
+  globe.addJSONData(currentFilter(data[index]));
   globe.createPoints();
   globe.animate();
 }
