@@ -94,7 +94,8 @@ if(!Detector.webgl){
 	var globe = new DAT.Globe(container);
 
   $('#loading').show();
-  preloadData(23, new Date(), function(index) {
+
+  /*preloadData(23, new Date(), function(index) {
 
     $('#loading').html( "Loading " + Math.ceil((23-index) * 100/23) + '%');
 
@@ -106,7 +107,33 @@ if(!Detector.webgl){
       $('#timelapse').removeAttr('disabled');
       $('#loading').hide();
     }
-  });
+  });*/
+
+  $.ajax( "https://auth0-logins-processor.herokuapp.com/list")
+      .done(function(d) {
+        data[23] = d;
+        loadData(23); 
+
+        $.ajax( "https://auth0-logins-processor.herokuapp.com/history")
+          .done(function(d) {
+            d[23] = data[23];
+            data = d;
+
+            $('#play').removeAttr('disabled');
+            $('#timelapse').removeAttr('disabled');
+            $('#loading').hide();
+          })
+          .fail(function() {
+            alert( "error" );
+          });
+
+
+      })
+      .fail(function() {
+        alert( "error" );
+      });
+
+  
 }
 
 function showAll() {
