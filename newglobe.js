@@ -67,8 +67,8 @@ DAT.Globe = function(container) {
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(width, height);
 
-    sceneAtmosphere.add(createAtmosphere());
-    // scene.add(createSphere());
+    scene.add(createAtmosphere());
+    scene.add(createSphere());
 
     controls = new THREE.TrackballControls(camera);
 
@@ -92,7 +92,7 @@ DAT.Globe = function(container) {
       );
 
     mesh.scale.x = mesh.scale.y = mesh.scale.z = 1.1;
-    mesh.flipSided = true;
+    mesh.material.side = THREE.BackSide;
     mesh.matrixAutoUpdate = false;
     mesh.updateMatrix();
     return mesh;
@@ -106,6 +106,7 @@ DAT.Globe = function(container) {
 
     return new THREE.Mesh(
       new THREE.SphereGeometry(2000, 40, 30),
+      // new THREE.MeshBasicMaterial({color: 0x2194CE})
       new THREE.ShaderMaterial({
         uniforms: uniforms,
         vertexShader: shader.vertexShader,
@@ -120,8 +121,9 @@ DAT.Globe = function(container) {
     // sphere.rotation.y += 0.0005;
     // clouds.rotation.y += 0.0005;
     requestAnimationFrame(render);
-    renderer.render(scene, camera);
-    renderer.render(sceneAtmosphere, camera);
+    //renderer.render(sceneAtmosphere, camera);
+      renderer.render(scene, camera);
+
   }
   
 
@@ -131,4 +133,3 @@ DAT.Globe = function(container) {
   return this;
 
 };
-
