@@ -228,6 +228,7 @@ DAT.Globe = function(container, colorFn) {
         lng = data[i].geo.lng + Math.sin(j * Math.PI * 0.5) * 0.001;
 
         value = strategies[j];
+        addStrategyToFilter(value);
         color = getColor(value);
         addPoint(lat, lng, size, color, subgeo);
       }

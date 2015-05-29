@@ -10,11 +10,9 @@
   <input disabled=true type="range" id="timelapse" value="23" max="23" min="1" oninput="loadData(this.value);" onchange="loadData(this.value);" />
   <input disabled=true type="button" id="play" onclick="PlayTimelapse()" value="Play" />
 
-  <input type="button" id="play" onclick="updateFilter(strategyFilter)" value="Filter Facebook" /> 
-
-  <input type="button" id="play" onclick="updateFilter(deviceFilter)" value="Filter Mac OS X" /> 
-
-  <input type="button" id="play" onclick="updateFilter(noFilter)" value="No Filter" />  
+  <select id="filter" onchange="updateStrategyFilter(this.value)">
+    <option value="" selected>No filter</option>
+  </select>
 
   <div id="container"></div>
 

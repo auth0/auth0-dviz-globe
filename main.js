@@ -26,26 +26,40 @@ function deviceFilter(arr) {
     return (e.devices['Mac OS X'] != undefined);
   });
 }
-function strategyFilter(arr) {
-  return _.filter(arr, function(e) {
+function strategyFilter(strategy) {
+  if (strategy == '') return noFilter;
 
-    if (e.strategies['facebook'] != undefined) {
-      e.strategies_original = e.strategies;
-
-      e.strategies = {
-        facebook:e.strategies['facebook']
+  return function(arr) {
+    return _.filter(arr, function(e) {
+      if (e.strategies[strategy] != undefined) {
+        e.strategies_original = e.strategies;
+        e.strategies = {}
+        e.strategies[strategy] = e.strategies[strategy];
+        return true;
       }
-      return true;
-    }
-    return false;
-
-  });
+      return false;
+    });
+  }
 }
 
-function updateFilter(filter) {
-  currentFilter = filter;
+function updateStrategyFilter(filter) {
+  currentFilter = strategyFilter(filter);
   loadData($('#timelapse').val());
 }
+
+var strategiesFilter = [];
+function addStrategyToFilter(name) {
+  if (strategiesFilter.indexOf(name) === -1) {
+    
+    strategiesFilter.push(name);
+
+    $('#filter').append($('<option>', {
+        value: name,
+        text: name
+    }));
+  }
+}
+
 
 function buildCollectionName(d) {
   return 'hour' + d.getUTCFullYear() + (d.getUTCMonth() + 1) + d.getUTCDate() + d.getUTCHours();  
