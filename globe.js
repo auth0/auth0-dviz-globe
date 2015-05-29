@@ -221,12 +221,14 @@ DAT.Globe = function(container, colorFn) {
     for (i = 0; i < data.length; i += 1) {
       strategies = Object.keys(data[i].strategies);
 
+      size = 1 / strategies.length;
+
       for (j = 0; j < strategies.length; j += 1) {
-        lat = data[i].geo.lat;
-        lng = data[i].geo.lng;
+        lat = data[i].geo.lat + Math.cos(j * Math.PI * 0.5) * 0.001;
+        lng = data[i].geo.lng + Math.sin(j * Math.PI * 0.5) * 0.001;
+
         value = strategies[j];
         color = getColor(value);
-        size = 0; 
         addPoint(lat, lng, size, color, subgeo);
       }
     }
@@ -255,7 +257,7 @@ DAT.Globe = function(container, colorFn) {
 
     point.lookAt(mesh.position);
 
-    point.scale.z = -size;
+    point.scale.set(size, size, size)
     point.updateMatrix();
     var i;
     for (i = 0; i < point.geometry.faces.length; i++) {
