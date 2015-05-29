@@ -222,27 +222,6 @@ DAT.Globe = function(container, colorFn) {
               morphTargets: false
       }));
       scene.addObject(points);
-
-      transitions.push(smoothIn(points));
-    }
-  }
-
-  function smoothIn(newMesh) {
-    newMesh.scale.set(2.1, 2.1, 2.1);
-    return function() {
-      return smoothInTransition(newMesh);
-    }
-  }
-
-  function smoothInTransition(newMesh, value) {
-    console.log(value);
-    if (value == 100) return;
-
-    value = value || 0;
-    newMesh.scale.set(0.999,0.999,0.999);
-
-    return function() { 
-      return smoothInTransition(newMesh, value + 1);
     }
   }
 
@@ -333,7 +312,6 @@ DAT.Globe = function(container, colorFn) {
   }
 
   function onWindowResize( event ) {
-    console.log('resize');
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize( window.innerWidth, window.innerHeight );
@@ -345,18 +323,8 @@ DAT.Globe = function(container, colorFn) {
     distanceTarget = distanceTarget < 350 ? 350 : distanceTarget;
   }
 
-  var transitions = [];
 
   function animate() {
-    var newTransitions = []
-    console.log('animate');
-    transitions.forEach(function(t) {
-      console.log('call transition');
-      var nt = t();
-      if (nt) newTransitions.push(nt);
-    });
-    transitions = newTransitions;
-
     requestAnimationFrame(animate);
     render();
 
