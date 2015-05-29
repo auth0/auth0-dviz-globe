@@ -3,25 +3,53 @@
   <head>
     <title>Auth0 globe</title>
     <meta charset="utf-8">
-    <link href="main.css" rel="stylesheet" />
+    <link href="/css/main.css" rel="stylesheet" />
   </head>
   <body>
 
-  <input disabled=true type="range" id="timelapse" value="23" max="23" min="1" oninput="loadData(this.value);" onchange="loadData(this.value);" />
-  <input disabled=true type="button" id="play" onclick="PlayTimelapse()" value="Play" />
+  <div id="globe">
+    <div id="filter">
+      
+      <ul>
+        <li><span onclick="updateStrategyFilter('')">No filter</span></li>
+      </ul>
 
- 
+    </div>
 
-  <div id="filter">
+    <div id="container"></div>
+    <div id="loading" style="display:none;"></div>
+    <div class="controls">
+
+        <input disabled=true type="range" id="timelapse" value="23" max="23" min="1" oninput="loadData(this.value);" onchange="loadData(this.value);" />
+        <input disabled=true type="button" id="play" onclick="PlayTimelapse()" value="Play" />
+
+    </div>
+  </div>
+
+  <div class="counters">
     
-    <ul>
-      <li><span onclick="updateStrategyFilter('')">No filter</span></li>
-    </ul>
+    <article class="signups">
+        <header>Signups</header>
+        <p class="counter">#######</p>
+        <p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ultrices risus et molestie facilisis. Donec felis lorem, porta sed elit nec, convallis consequat nulla. Aliquam a sagittis ipsum. Duis vel consectetur libero, et ultricies lorem. Curabitur in malesuada sem, at finibus mauris</p>
+    </article>
+
+    <article class="logins">
+        <header>Logins</header>
+        <p class="counter">#######</p>
+        <p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ultrices risus et molestie facilisis. Donec felis lorem, porta sed elit nec, convallis consequat nulla. Aliquam a sagittis ipsum. Duis vel consectetur libero, et ultricies lorem. Curabitur in malesuada sem, at finibus mauris</p>
+    </article>
+
+    <article class="apps">
+        <header>Apps Created</header>
+        <p class="counter">#######</p>
+        <p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ultrices risus et molestie facilisis. Donec felis lorem, porta sed elit nec, convallis consequat nulla. Aliquam a sagittis ipsum. Duis vel consectetur libero, et ultricies lorem. Curabitur in malesuada sem, at finibus mauris</p>
+    </article>
 
   </div>
 
-  <div id="container"></div>
-  <div id="loading" style="display:none;"></div>
+  <div class="equalizer">Equalizer</div>
+  <div class="bubbles">Bubbles</div>
 
 
   

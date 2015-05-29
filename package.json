@@ -1,0 +1,23 @@
+{
+  "name": "auth0_globe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/auth0/auth0-dviz-globe.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/auth0/auth0-dviz-globe/issues"
+  },
+  "homepage": "https://github.com/auth0/auth0-dviz-globe",
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-sass": "^2.0.1"
+  }
+}

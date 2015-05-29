@@ -63,7 +63,7 @@ DAT.Globe = function(container, colorFn) {
       fragmentShader: [
         'varying vec3 vNormal;',
         'void main() {',
-          'float intensity = pow( 0.8 - dot( vNormal, vec3( 0, 0, 1.0 ) ), 12.0 );',
+          'float intensity = pow( 0.77 - dot( vNormal, vec3( 0, 0, 1.0 ) ), 15.0 );',
           'gl_FragColor = vec4( 1.0, 1.0, 1.0, 1.0 ) * intensity;',
         '}'
       ].join('\n')
@@ -75,7 +75,7 @@ DAT.Globe = function(container, colorFn) {
 
   var overRenderer;
 
-  var imgDir = '';
+  var imgDir = '/img/';
 
   var curZoomSpeed = 0;
   var zoomSpeed = 50;
@@ -112,8 +112,7 @@ DAT.Globe = function(container, colorFn) {
     shader = Shaders['earth'];
     uniforms = THREE.UniformsUtils.clone(shader.uniforms);
 
-    uniforms['texture'].texture = THREE.ImageUtils.loadTexture(imgDir+'world' +
-        '.jpg');
+    uniforms['texture'].texture = THREE.ImageUtils.loadTexture(imgDir+'world' +'.jpg');
 
     material = new THREE.MeshShaderMaterial({
 
@@ -164,13 +163,13 @@ DAT.Globe = function(container, colorFn) {
     renderer.setClearColorHex(0x000000, 0.0);
     renderer.setSize(w, h);
 
-    renderer.domElement.style.position = 'absolute';
+    // renderer.domElement.style.position = 'absolute';
 
     container.appendChild(renderer.domElement);
 
     container.addEventListener('mousedown', onMouseDown, false);
 
-    container.addEventListener('mousewheel', onMouseWheel, false);
+    container.addEventListener('dblclick', onToggleZoom, false);
 
     document.addEventListener('keydown', onDocumentKeyDown, false);
 
@@ -325,11 +324,15 @@ DAT.Globe = function(container, colorFn) {
     container.removeEventListener('mouseout', onMouseOut, false);
   }
 
-  function onMouseWheel(event) {
+  var isZoomed = false;
+  function onToggleZoom(event) {
+
+    isZoomed = !isZoomed;
+
     event.preventDefault();
-    if (overRenderer) {
-      zoom(event.wheelDeltaY * 0.3);
-    }
+
+    zoom(isZoomed ? 1000 : -1000);
+
     return false;
   }
 
