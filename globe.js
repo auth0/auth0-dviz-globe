@@ -145,15 +145,17 @@ DAT.Globe = function(container, colorFn) {
     mesh.updateMatrix();
     sceneAtmosphere.addObject(mesh);
 
-    geometry = new THREE.Cube(1.5, 1.5, 1, 1, 1, 1, null, false, { px: true,
-          nx: true, py: true, ny: true, pz: false, nz: true});
+    // geometry = new THREE.Cube(1.5, 1.5, 1, 1, 1, 1, null, false, { px: true,
+    //       nx: true, py: true, ny: true, pz: false, nz: true});
 
-    for (var i = 0; i < geometry.vertices.length; i++) {
+    // for (var i = 0; i < geometry.vertices.length; i++) {
 
-      var vertex = geometry.vertices[i];
-      vertex.position.z += 0.5;
+    //   var vertex = geometry.vertices[i];
+    //   vertex.position.z += 0.5;
 
-    }
+    // }
+
+    geometry = new THREE.Sphere(1, 10, 10);
 
     point = new THREE.Mesh(geometry);
 
@@ -203,6 +205,9 @@ DAT.Globe = function(container, colorFn) {
       case 'windowslive': return new THREE.Color(0x00bcf2);
       case 'yahoo': return new THREE.Color(0x400191);
       case 'sms': return new THREE.Color(0x2ECC71); //-----
+      case 'office365': return new THREE.Color(0xCB3F07);
+      case 'vkontakte': return new THREE.Color(0x5B7195);
+
 
       case 'salesforce-sandbox':
       case 'salesforce-community': return new THREE.Color(0x1798c1);
@@ -221,7 +226,7 @@ DAT.Globe = function(container, colorFn) {
     for (i = 0; i < data.length; i += 1) {
       strategies = Object.keys(data[i].strategies);
 
-      size = 1 / strategies.length;
+      // size = 1 / strategies.length;
 
       for (j = 0; j < strategies.length; j += 1) {
         lat = data[i].geo.lat + Math.cos(j * Math.PI * 0.5) * 0.001;
@@ -241,6 +246,7 @@ DAT.Globe = function(container, colorFn) {
     if (this._baseGeometry !== undefined) {
       var points = new THREE.Mesh(this._baseGeometry, new THREE.MeshBasicMaterial({
               color: 0xffffff,
+              // opacity: 0.5,
               vertexColors: THREE.FaceColors,
               morphTargets: false
       }));
@@ -258,7 +264,7 @@ DAT.Globe = function(container, colorFn) {
 
     point.lookAt(mesh.position);
 
-    point.scale.set(size, size, size)
+    // point.scale.set(size, size, size);
     point.updateMatrix();
     var i;
     for (i = 0; i < point.geometry.faces.length; i++) {
