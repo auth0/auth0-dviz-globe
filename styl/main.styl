@@ -1,7 +1,7 @@
-html {
+html 
   height: 100%;
-}
-body {
+
+body 
   margin: 0;
   padding: 0;
   background: #000000 url(/img/loading.gif) center center no-repeat;
@@ -10,63 +10,60 @@ body {
   font-size: 13px;
   line-height: 20px;
   height: 100%;
-}
 
-#globe {
+
+#globe 
   position:relative;
 
-  .controls {
+  .controls 
     position: absolute;
     bottom: 5px;
     left: 0;
     right: 0;
     text-align: center;
-  }
-}
-#container {
+  
+#container 
   background: #000000 url('/img/stars.png');
-}
 
-#loading {
+
+#loading 
   position: absolute;
   top: 30px;
   left: 20px;
   font-size: 18px;
   color: #ffffff;
-}
 
 
-#filter {
+
+#filter 
   z-index: 999;
   position: absolute;
   top:100px;
   left: 0;
   width: 200px;
-}
-#filter ul {
-  list-style: none;
-}
-#filter ul li{
-  cursor: pointer;
-}
-#filter ul li:hover{
-  font-weight: bold;
-}
 
-.counters article {
+  ul 
+    list-style: none;
+
+    li
+      cursor: pointer;
+
+      &:hover
+        font-weight: bold;
+
+
+.counters article 
   width: 30%;
   margin:auto;
-}
-.counters article.signups {
-  float:left;
-}
-.counters article.logins {
-  float:right;
-}
 
-.bubbles,
-.equalizer {
+  &.signups 
+    float:left;
+
+  &.logins 
+    float:right;
+
+
+.bubbles,.equalizer 
   width: 100%;
   margin: 300px 0;
   text-align: center;
-}
