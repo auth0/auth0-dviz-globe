@@ -145,7 +145,7 @@ DAT.Globe = function(container, colorFn) {
     mesh.updateMatrix();
     sceneAtmosphere.addObject(mesh);
 
-    geometry = new THREE.Cube(1, 1, 1, 1, 1, 1, null, false, { px: true,
+    geometry = new THREE.Cube(1.5, 1.5, 1, 1, 1, 1, null, false, { px: true,
           nx: true, py: true, ny: true, pz: false, nz: true});
 
     for (var i = 0; i < geometry.vertices.length; i++) {
@@ -183,32 +183,52 @@ DAT.Globe = function(container, colorFn) {
     }, false);
   }
 
-  addData = function(data, opts) {
-    var lat, lng, size, color, i;
+  function getColor(value) {
 
-    var subgeo = new THREE.Geometry();
-    for (i = 0; i < data.length; i += 3) {
-      lat = data[i];
-      lng = data[i + 1];
-      color = colorFn(data[i+2]);
-      size = 1; // data[i + 2]; // CHANGED
-      addPoint(lat, lng, size, color, subgeo);
+    switch(value) {
+      case 'github': return new THREE.Color(0x999999);
+      case 'auth0': return new THREE.Color(0xEB5424);
+      case 'ad': return new THREE.Color(0x00abec);
+      case 'samlp': return new THREE.Color(0xF5AB35);//------
+      case 'adfs': return new THREE.Color(0x00abec); // AD
+      case 'facebook': return new THREE.Color(0x3b5998);
+      case 'waad': return new THREE.Color(0xFDE3A7); //------
+      case 'google-oauth2': return new THREE.Color(0xdb4437);
+      case 'amazon': return new THREE.Color(0xff9900);
+      case 'oauth2': return new THREE.Color(0xDB0A5B); //-----
+      case 'pingfederate': return new THREE.Color(0xC82946);
+      case 'linkedin': return new THREE.Color(0x0077b5);
+      case 'google-apps': return new THREE.Color(0x0f9d58);
+      case 'twitter': return new THREE.Color(0x55acee);
+      case 'windowslive': return new THREE.Color(0x00bcf2);
+      case 'yahoo': return new THREE.Color(0x400191);
+      case 'sms': return new THREE.Color(0x2ECC71); //-----
+
+      case 'salesforce-sandbox':
+      case 'salesforce-community': return new THREE.Color(0x1798c1);
+      
+      case 'instagram': return new THREE.Color(0x3f729b);
+
+
+      default: console.log(value); return new THREE.Color(0xffffff);
     }
-    this._baseGeometry = subgeo;
+  }
 
-  };
-
-  addJSONData = function(data, opts) {
-    var lat, lng, size, color, i;
+  addData = function(data, opts) {
+    var lat, lng, size, color, i, j, strategies;
 
     var subgeo = new THREE.Geometry();
     for (i = 0; i < data.length; i += 1) {
-      lat = data[i].geo.lat;
-      lng = data[i].geo.lng;
-      value = data[i].devices[Object.keys(data[i].devices)[0]];
-      color = new THREE.Color(0xff9800);
-      size = 0; 
-      addPoint(lat, lng, size, color, subgeo);
+      strategies = Object.keys(data[i].strategies);
+
+      for (j = 0; j < strategies.length; j += 1) {
+        lat = data[i].geo.lat;
+        lng = data[i].geo.lng;
+        value = strategies[j];
+        color = getColor(value);
+        size = 0; 
+        addPoint(lat, lng, size, color, subgeo);
+      }
     }
     this._baseGeometry = subgeo;
 
@@ -358,7 +378,6 @@ var ainc = 0.01;
 
   init();
   this.animate = animate;
-  this.addJSONData = addJSONData;
   this.addData = addData;
   this.createPoints = createPoints;
   this.renderer = renderer;

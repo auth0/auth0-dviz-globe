@@ -14,6 +14,11 @@ var data = [];
 var currentFilter = noFilter;
 
 function noFilter(arr) {
+  arr.forEach(function(e){
+    if (e.strategies_original) {
+      e.strategies = e.strategies_original;
+    }
+  });
   return arr;
 }
 function deviceFilter(arr) {
@@ -23,7 +28,17 @@ function deviceFilter(arr) {
 }
 function strategyFilter(arr) {
   return _.filter(arr, function(e) {
-    return (e.strategies['facebook'] != undefined);
+
+    if (e.strategies['facebook'] != undefined) {
+      e.strategies_original = e.strategies;
+
+      e.strategies = {
+        facebook:e.strategies['facebook']
+      }
+      return true;
+    }
+    return false;
+
   });
 }
 
@@ -91,7 +106,7 @@ var animated = false;
 function loadData(index) {
 
   globe.clearData();
-  globe.addJSONData(currentFilter(data[index]));
+  globe.addData(currentFilter(data[index]));
   globe.createPoints();
   
   if (!animated) {
