@@ -231,7 +231,7 @@ DAT.Globe = function(container, colorFn) {
 
         value = strategies[j];
 
-        if (value != 'auth0') size = 2;
+        if (value != 'auth0') size = 1;
 
         lat = data[i].geo.lat + Math.cos(j * Math.PI * 0.5) * 0.001;
         lng = data[i].geo.lng + Math.sin(j * Math.PI * 0.5) * 0.001;
