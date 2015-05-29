@@ -41,7 +41,7 @@ a:hover {
 
 .bull {
   padding: 0 5px;
-  color: #555;
+  color: #555;list-style: none;
 }
 .bull:hover {
   color: #fff;
@@ -64,4 +64,13 @@ a:hover {
   top:100px;
   left: 0;
   width: 200px;
+}
+#filter ul {
+  list-style: none;
+}
+#filter ul li{
+  cursor: pointer;
+}
+#filter ul li:hover{
+  font-weight: bold;
 }
