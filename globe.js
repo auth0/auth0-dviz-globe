@@ -81,7 +81,7 @@ DAT.Globe = function(container, colorFn) {
   var zoomSpeed = 50;
 
   var mouse = { x: 0, y: 0 }, mouseOnDown = { x: 0, y: 0 };
-  var rotation = { x: 0, y: 0 },
+  var rotation = { x: 10, y: 10 },
       target = { x: Math.PI*3/2, y: Math.PI / 6.0 },
       targetOnDown = { x: 0, y: 0 };
 
@@ -264,6 +264,7 @@ DAT.Globe = function(container, colorFn) {
   }
 
   function onMouseMove(event) {
+    ainc = 0;
     mouse.x = - event.clientX;
     mouse.y = event.clientY;
 
@@ -327,17 +328,24 @@ DAT.Globe = function(container, colorFn) {
     requestAnimationFrame(animate);
     render();
   }
-
+var a = 0;
+var ainc = 0.01;
   function render() {
+    a = a + ainc;
     zoom(curZoomSpeed);
 
     rotation.x += (target.x - rotation.x) * 0.1;
     rotation.y += (target.y - rotation.y) * 0.1;
     distance += (distanceTarget - distance) * 0.3;
 
-    camera.position.x = distance * Math.sin(rotation.x) * Math.cos(rotation.y);
+    // camera.position.x = distance * Math.sin(rotation.x) * Math.cos(rotation.y);
+    // camera.position.y = distance * Math.sin(rotation.y);
+    // camera.position.z = distance * Math.cos(rotation.x) * Math.cos(rotation.y);
+
+
     camera.position.y = distance * Math.sin(rotation.y);
-    camera.position.z = distance * Math.cos(rotation.x) * Math.cos(rotation.y);
+    camera.position.x = distance * Math.sin(rotation.x + a) * Math.cos(rotation.y);
+    camera.position.z = distance * Math.cos(rotation.x + a) * Math.cos(rotation.y);
 
     vector.copy(camera.position);
 
