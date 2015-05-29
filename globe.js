@@ -145,17 +145,17 @@ DAT.Globe = function(container, colorFn) {
     mesh.updateMatrix();
     sceneAtmosphere.addObject(mesh);
 
-    // geometry = new THREE.Cube(1.5, 1.5, 1, 1, 1, 1, null, false, { px: true,
-    //       nx: true, py: true, ny: true, pz: false, nz: true});
+    geometry = new THREE.Cube(0.5, 0.5, 1, 1, 1, 1, null, false, { px: true,
+          nx: true, py: true, ny: true, pz: false, nz: true});
 
-    // for (var i = 0; i < geometry.vertices.length; i++) {
+    for (var i = 0; i < geometry.vertices.length; i++) {
 
-    //   var vertex = geometry.vertices[i];
-    //   vertex.position.z += 0.5;
+      var vertex = geometry.vertices[i];
+      vertex.position.z += 0.5;
 
-    // }
+    }
 
-    geometry = new THREE.Sphere(1, 10, 10);
+    // geometry = new THREE.Sphere(1, 10, 10);
 
     point = new THREE.Mesh(geometry);
 
@@ -226,18 +226,23 @@ DAT.Globe = function(container, colorFn) {
     for (i = 0; i < data.length; i += 1) {
       strategies = Object.keys(data[i].strategies);
 
-      // size = 1 / strategies.length;
+      size = 1;
 
       for (j = 0; j < strategies.length; j += 1) {
-        lat = data[i].geo.lat + Math.cos(j * Math.PI * 0.5) * 0.001;
-        lng = data[i].geo.lng + Math.sin(j * Math.PI * 0.5) * 0.001;
 
         value = strategies[j];
+
+        if (value != 'auth0') size = 2;
+
+        lat = data[i].geo.lat + Math.cos(j * Math.PI * 0.5) * 0.001;
+        lng = data[i].geo.lng + Math.sin(j * Math.PI * 0.5) * 0.001;
+        
         addStrategyToFilter(value);
         color = getColor(value);
         addPoint(lat, lng, size, color, subgeo);
       }
     }
+
     this._baseGeometry = subgeo;
 
   };
@@ -246,7 +251,7 @@ DAT.Globe = function(container, colorFn) {
     if (this._baseGeometry !== undefined) {
       var points = new THREE.Mesh(this._baseGeometry, new THREE.MeshBasicMaterial({
               color: 0xffffff,
-              // opacity: 0.5,
+              opacity: 1,
               vertexColors: THREE.FaceColors,
               morphTargets: false
       }));
@@ -264,7 +269,8 @@ DAT.Globe = function(container, colorFn) {
 
     point.lookAt(mesh.position);
 
-    // point.scale.set(size, size, size);
+    point.scale.set(size, size, size);
+
     point.updateMatrix();
     var i;
     for (i = 0; i < point.geometry.faces.length; i++) {

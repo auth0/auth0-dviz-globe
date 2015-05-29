@@ -57,3 +57,11 @@ a:hover {
   font: 20px Gill Sans MT;
   padding: 10px;
 }
+
+#filter {
+  z-index: 999;
+  position: absolute;
+  top:100px;
+  left: 0;
+  width: 200px;
+}

@@ -21,16 +21,13 @@ function noFilter(arr) {
   });
   return arr;
 }
-function deviceFilter(arr) {
-  return _.filter(arr, function(e) {
-    return (e.devices['Mac OS X'] != undefined);
-  });
-}
+
 function strategyFilter(strategy) {
   if (strategy == '') return noFilter;
 
   return function(arr) {
     return _.filter(arr, function(e) {
+      e.strategies = e.strategies_original || e.strategies;
       if (e.strategies[strategy] != undefined) {
         e.strategies_original = e.strategies;
         e.strategies = {}
@@ -53,10 +50,7 @@ function addStrategyToFilter(name) {
     
     strategiesFilter.push(name);
 
-    $('#filter').append($('<option>', {
-        value: name,
-        text: name
-    }));
+    $('#filter ul').append('<li><span onclick="updateStrategyFilter(\''+name+'\')">'+name+'</span></li>');
   }
 }
 
@@ -113,6 +107,16 @@ if(!Detector.webgl){
       $('#loading').hide();
     }
   });
+}
+
+function showAll() {
+  globe.clearData();
+  var newdata = [];
+  data.forEach(function(e) {
+    newdata.concat(e);
+  });
+  globe.addData(newdata);  
+  globe.createPoints();
 }
 
 var animated = false;

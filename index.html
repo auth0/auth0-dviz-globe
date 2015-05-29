@@ -10,13 +10,20 @@
   <input disabled=true type="range" id="timelapse" value="23" max="23" min="1" oninput="loadData(this.value);" onchange="loadData(this.value);" />
   <input disabled=true type="button" id="play" onclick="PlayTimelapse()" value="Play" />
 
-  <select id="filter" onchange="updateStrategyFilter(this.value)">
-    <option value="" selected>No filter</option>
-  </select>
+ 
+
+  <div id="filter">
+    
+    <ul>
+      <li><span onclick="updateStrategyFilter('')">No filter</span></li>
+    </ul>
+
+  </div>
 
   <div id="container"></div>
-
   <div id="loading" style="display:none;"></div>
+
+
   
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/stats.js/r11/Stats.js"></script>
   <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
