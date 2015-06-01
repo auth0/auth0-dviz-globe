@@ -1,5 +1,5 @@
 (function(){
-
+var timeout = 30 /* seconds */* 1000;
 var size = {
 	height:400,
 	width: window.innerWidth,
@@ -44,10 +44,9 @@ channel.bind('login', function(data) {
 function addData(d) {
 
 	if (d.device === undefined) return;
-	console.log(d.device);
 
 	var item;
-	var index = _.findIndex(eqData, function(e) {return e.name == d.device;});
+	var index = _.findIndex(eqData, function(e) {return e.name.toLowerCase() == d.device.toLowerCase();});
 
 	if (index == -1) {
 		item = {
@@ -67,7 +66,7 @@ function addData(d) {
 
 	eqData.forEach(function(e){
 		e.stamps = _.filter(e.stamps, function(f) {
-			return f > Date.now() - 10 * 1000;
+			return f > Date.now() - timeout;
 		});
 		e.value = e.stamps.length;
 	});
