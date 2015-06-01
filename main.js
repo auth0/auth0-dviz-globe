@@ -178,4 +178,3 @@ function preloadData(index, date, afterLoadCallback) {
 
 }
 
-//================================================================

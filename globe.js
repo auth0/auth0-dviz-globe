@@ -371,7 +371,7 @@ DAT.Globe = function(container, colorFn) {
 var a = 0;
 var ainc = 0.01;
   function render() {
-    a = a + ainc;
+    a = a - ainc;
     zoom(curZoomSpeed);
 
     rotation.x += (target.x - rotation.x) * 0.1;

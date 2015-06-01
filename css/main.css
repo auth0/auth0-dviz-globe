@@ -57,9 +57,21 @@ body {
 .counters article.logins {
   float: right;
 }
-.bubbles,
-.equalizer {
+.bubbles {
   width: 100%;
   margin: 300px 0;
   text-align: center;
+}
+.equalizer svg text {
+  fill: #fff;
+}
+.equalizer svg text.xaxis {
+  text-anchor: middle;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+.equalizer svg path.domain {
+  stroke: #fff;
+  fill: none;
+  stroke-width: 1px;
 }
