@@ -61,7 +61,7 @@ DAT.Globe = function(container) {
     scene = new THREE.Scene();
     sceneAtmosphere = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+    camera = new THREE.PerspectiveCamera(45, width / height, 1, 100000);
     camera.position.z = distance;
 
     renderer = new THREE.WebGLRenderer();
@@ -70,7 +70,18 @@ DAT.Globe = function(container) {
     scene.add(createAtmosphere());
     scene.add(createSphere());
 
-    controls = new THREE.TrackballControls(camera);
+    // controls = new THREE.TrackballControls(camera);
+
+    controls = new THREE.OrbitAndPanControls(camera, renderer.domElement);
+    controls.target.set(0, 0, 0);
+    controls.maxDistance = 1;
+    controls.minDistance = 100000;
+    controls.userRotateSpeed = 500;
+    controls.momentumDampingFactor = 8;
+    controls.momentumScalingFactor = 0.005;
+    controls.getMouseProjectionOnBall2 = controls.getMouseProjectionOnBall;
+
+
 
     container.appendChild(renderer.domElement);
     renderer.shadowMapEnabled = true
