@@ -55,14 +55,14 @@ var Equalizer = function(){
 
 		item.stamps.push(now);
 
-		eqData.forEach(function(e){
-			e.stamps = _.filter(e.stamps, function(f) {
-				return f > Date.now() - timeout;
-			});
-			e.value = e.stamps.length;
-		});
+		// eqData.forEach(function(e){
+		// 	e.stamps = _.filter(e.stamps, function(f) {
+		// 		return f > Date.now() - timeout;
+		// 	});
+		// 	e.value = e.stamps.length;
+		// });
 
-		eqData = _.filter(eqData, function(e) {return e.value > 0});
+		// eqData = _.filter(eqData, function(e) {return e.value > 0});
 
 	}
 
