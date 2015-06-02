@@ -71,7 +71,7 @@ var Equalizer = function(){
 
 		x.domain(_.range(0,eqData.length,1));
 		y.domain([0, maxValue]);
-		eq.select("g.y.axis").call(yAxis.ticks(maxValue));
+		eq.select("g.y.axis").call(yAxis/*.ticks(5)*/);
 
 		var rects = bars.selectAll('rect.value').data(eqData);    
 		rects.enter()
