@@ -57,13 +57,12 @@ function addData(d) {
     e.value = e.stamps.length;
   });
 
-  eqData = _.filter(bbData, function(e) {return e.value > 0});
+  bbData = _.filter(bbData, function(e) {return e.value > 0});
 
 }
 
 function updateData() {
   if (bbData.length == 0) return;
-  console.log(bbData);
   var newdata = _.clone(bbData);
   newdata = bubble.nodes({children:newdata}).filter(function(d) { return !d.children; });
 
@@ -100,17 +99,17 @@ function updateData() {
       .attr("transform", function(d) {return "translate(" + d.x + "," + d.y + ")"; })
       .attr("r", function(d) { return d.r; });
 
-  var nodes = svg.selectAll("text.node")
+  var textNodes = svg.selectAll("text.node")
       .data(newdata, function(d) { return d.name; });
 
-  nodes.enter().append("text")
+  textNodes.enter().append("text")
       .classed("node", true)
       .text(function(d){return d.name;});
 
-  nodes.exit()
+  textNodes.exit()
       .remove();
 
-  nodes.transition()
+  textNodes.transition()
       .attr("transform", function(d) {return "translate(" + d.x + "," + d.y + ")"; })
       .attr("dy", ".3em")
       .style("text-anchor", "middle");
