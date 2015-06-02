@@ -1,4 +1,5 @@
 (function(){
+	
 var timeout = 30 /* seconds */* 1000;
 var size = {
 	height:400,
