@@ -51,7 +51,7 @@ body {
   width: 30%;
   margin: auto;
 }
-.counters article.signups {
+.counters article.tokens {
   float: left;
 }
 .counters article.logins {

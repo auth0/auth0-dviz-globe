@@ -95,12 +95,12 @@ if(!Detector.webgl){
 
   $('#loading').show();
 
-  $.ajax( "https://auth0-logins-processor.herokuapp.com/list")
+  $.ajax( "http://auth0-logins-processor.herokuapp.com/list")
       .done(function(d) {
         data[23] = d;
         loadData(23); 
 
-        $.ajax( "https://auth0-logins-processor.herokuapp.com/history")
+        $.ajax( "http://auth0-logins-processor.herokuapp.com/history")
           .done(function(d) {
             d[23] = data[23];
             data = d;
