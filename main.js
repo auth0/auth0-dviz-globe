@@ -13,14 +13,16 @@ $.ajax( "http://auth0-logins-processor.herokuapp.com/settings")
 
         channel.bind('login', function(data) {
 	
-			bubbles.pushData(data);
-			equalizer.pushData(data);
+    			bubbles.pushData(data);
+    			equalizer.pushData(data, 'login');
 
-			counters.logins++;
+          if (Math.random() > 0.5) equalizer.pushData(data, 'signup');
 
-			updateCounters();
+    			counters.logins++;
 
-		});
+    			updateCounters();
+
+		    });
 
       })
       .fail(function() {
@@ -29,6 +31,6 @@ $.ajax( "http://auth0-logins-processor.herokuapp.com/settings")
 
 function updateCounters(){
 	$('.tokens .counter').html(counters.tokens);
-    $('.logins .counter').html(counters.logins);
-    $('.apps .counter').html(counters.apps);
+  $('.logins .counter').html(counters.logins);
+  $('.apps .counter').html(counters.apps);
 }

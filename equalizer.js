@@ -32,76 +32,75 @@ var Equalizer = function(){
 			.attr("transform", "translate(" + [ size.axisWidth, size.padding + size.axisWidth ] + ")")
 			.call(yAxis);
 
-	function addData(d) {
+	var types = {'signup':0, 'login':1};
+	var typeNames = Object.keys(types);
+
+	Object.keys(types).forEach(function(t) {
+		eqData[types[t]] = [];
+	})
+
+	function addData(d, type) {
 
 		if (d.device === undefined) return;
 
 		var item;
-		var index = _.findIndex(eqData, function(e) {return e.name.toLowerCase() == d.device.toLowerCase();});
+		var index = _.findIndex(eqData[types[type]], 
+			function(e) {return e.x.toLowerCase() == d.device.toLowerCase();}
+		);
 
-		if (index == -1) {
-			item = {
-				name: d.device,
-				stamps: []
-			}
-			eqData.push(item);
-			index = eqData.length - 1;
+		if (index === -1) {
+
+			Object.keys(types).forEach(function(t) {
+				eqData[types[t]].push({
+					x: d.device,
+					y: 0
+				})
+			}) 
+
+			index = eqData[types[type]].length - 1;
 		}
-		else {
-			item = eqData[index];
-		}
 
-		var now = Date.now();
-
-		item.stamps.push(now);
-
-		eqData.forEach(function(e){
-			// e.stamps = _.filter(e.stamps, function(f) {
-			// 	return f > Date.now() - timeout;
-			// });
-			e.value = e.stamps.length;
-		});
-
-		// eqData = _.filter(eqData, function(e) {return e.value > 0});
+		item = eqData[types[type]][index].y++;
 
 	}
 
 	function updateData() {
-		var maxValue = d3.max(eqData,function(d) { return d.value; });
 
-		x.domain(_.range(0,eqData.length,1));
-		y.domain([0, maxValue]);
-		eq.select("g.y.axis").call(yAxis/*.ticks(5)*/);
+		var stackedData = d3.layout.stack()(eqData);
 
-		var rects = bars.selectAll('rect.value').data(eqData);    
-		rects.enter()
-				.append('rect')
-					.classed('value',true)
-					.attr("height", 0)
-				    .attr("x", function(d, i) { return x(i); }) 
-					.attr("y", height)
-					.attr("width", x.rangeBand())
-					.style("fill", function(d,i){ return getTexture(i); });
+		x.domain(_.range(0,eqData[0].length,1));
+  		y.domain([0, d3.max(stackedData[stackedData.length - 1], function(d) { return d.y0 + d.y; })]);
 
-		rects.exit().remove();
+  		stackedData.forEach(function(typeData, index){
 
-		rects.transition()
-					.attr("y", function(d) { return y(d.value); })
-					.attr("height", function(d) { return height-y(d.value); })
-					.attr("width", x.rangeBand())
-					.attr("x", function(d, i) { return x(i); });
+  			var rects = bars.selectAll("rect."+typeNames[index])
+				.data(typeData);
 
-		var texts = bars.selectAll('text.xaxis').data(eqData);
-		texts.enter()
-				.append('text')
-					.classed('xaxis',true)
-				    .attr("x", function(d, i) { return x(i) + (x.rangeBand() / 2); }) 
-					.attr("y", height + size.padding)
-					.text(function(d){return d.name;});
+			rects.enter().append("rect")
+				.classed(typeNames[index],true)
+				.attr("x", function(d, i) { return x(i); })
+				.attr("y", function(d) { return y(d.y + d.y0); })
+				.attr("height", function(d) { return height-y(d.y); })
+				.attr("width", x.rangeBand())
+				.style("fill", getTexture(index));
 
-		texts.exit().remove();
+			rects.transition()
+				.attr("x", function(d, i) { return x(i); })
+				.attr("y", function(d) { return y(d.y + d.y0); })
+				.attr("height", function(d) { return height-y(d.y); })
+				.attr("width", x.rangeBand());
 
-		texts.transition().attr("x", function(d, i) { return x(i) + (x.rangeBand()/2); });
+  		});
+
+		// var texts = bars.selectAll('text.xaxis').data(eqData);
+		// texts.enter()
+		// 		.append('text')
+		// 			.classed('xaxis',true)
+		// 		    .attr("x", function(d, i) { return x(i) + (x.rangeBand() / 2); }) 
+		// 			.attr("y", height + size.padding)
+		// 			.text(function(d){return d.x;});
+
+		// texts.transition().attr("x", function(d, i) { return x(i) + (x.rangeBand()/2); });
 	}
 
 	function getTexture(i) {
@@ -120,8 +119,8 @@ var Equalizer = function(){
 		return texturesArr[i];
 	}
 
-	this.pushData = function(d) {
-	    addData(d);
+	this.pushData = function(d, type) {
+	    addData(d, type);
 	    updateData();
 	  };
 
