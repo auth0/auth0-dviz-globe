@@ -32,7 +32,7 @@ var Equalizer = function(){
 			.attr("transform", "translate(" + [ size.axisWidth, size.padding + size.axisWidth ] + ")")
 			.call(yAxis);
 
-	var types = {'signup':0, 'login':1};
+	var types = {'signup':0, 'login':1, 'resetPassword':2, 'suspicious':3};
 	var typeNames = Object.keys(types);
 
 	Object.keys(types).forEach(function(t) {

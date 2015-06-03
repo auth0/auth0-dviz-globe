@@ -16,7 +16,9 @@ $.ajax( "http://auth0-logins-processor.herokuapp.com/settings")
     			bubbles.pushData(data);
     			equalizer.pushData(data, 'login');
 
-          if (Math.random() > 0.5) equalizer.pushData(data, 'signup');
+          if (Math.random() > 0.4) equalizer.pushData(data, 'signup');
+          if (Math.random() > 0.3) equalizer.pushData(data, 'resetPassword');
+          if (Math.random() > 0.2) equalizer.pushData(data, 'suspicious');
 
     			counters.logins++;
 
