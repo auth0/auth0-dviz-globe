@@ -144,17 +144,17 @@ DAT.Globe = function(container, colorFn) {
     mesh.updateMatrix();
     sceneAtmosphere.addObject(mesh);
 
-    geometry = new THREE.Cube(0.5, 0.5, 1, 1, 1, 1, null, false, { px: true,
-          nx: true, py: true, ny: true, pz: false, nz: true});
+    // geometry = new THREE.Cube(0.5, 0.5, 1, 1, 1, 1, null, false, { px: true,
+    //       nx: true, py: true, ny: true, pz: false, nz: true});
 
-    for (var i = 0; i < geometry.vertices.length; i++) {
+    // for (var i = 0; i < geometry.vertices.length; i++) {
 
-      var vertex = geometry.vertices[i];
-      vertex.position.z += 0.5;
+    //   var vertex = geometry.vertices[i];
+    //   vertex.position.z += 0.5;
 
-    }
+    // }
 
-    // geometry = new THREE.Sphere(1, 10, 10);
+    geometry = new THREE.Sphere(1, 10, 10);
 
     point = new THREE.Mesh(geometry);
 
@@ -225,13 +225,12 @@ DAT.Globe = function(container, colorFn) {
     for (i = 0; i < data.length; i += 1) {
       strategies = Object.keys(data[i].strategies);
 
-      size = 1;
-
       for (j = 0; j < strategies.length; j += 1) {
 
         value = strategies[j];
 
-        if (value != 'auth0') size = 1;
+        size = data[i].strategies[value];
+        size = size > 5 ? 5 : size;
 
         lat = data[i].geo.lat + Math.cos(j * Math.PI * 0.5) * 0.001;
         lng = data[i].geo.lng + Math.sin(j * Math.PI * 0.5) * 0.001;
@@ -248,12 +247,16 @@ DAT.Globe = function(container, colorFn) {
 
   function createPoints() {
     if (this._baseGeometry !== undefined) {
-      var points = new THREE.Mesh(this._baseGeometry, new THREE.MeshBasicMaterial({
+
+      var material = new THREE.MeshLambertMaterial({
               color: 0xffffff,
               opacity: 1,
               vertexColors: THREE.FaceColors,
-              morphTargets: false
-      }));
+              morphTargets: false,
+              ambient: 0xfff7c4
+      });
+
+      var points = new THREE.Mesh(this._baseGeometry, material);
       scene.addObject(points);
     }
   }
@@ -262,9 +265,13 @@ DAT.Globe = function(container, colorFn) {
     var phi = (90 - lat) * Math.PI / 180;
     var theta = (180 - lng) * Math.PI / 180;
 
-    point.position.x = 200 * Math.sin(phi) * Math.cos(theta);
-    point.position.y = 200 * Math.cos(phi);
-    point.position.z = 200 * Math.sin(phi) * Math.sin(theta);
+    var hover = 15 * (1 + Math.random() * 0.2) ;
+    var weight = (hover - size * 3);
+    var radius = 200 + (weight < 0 ? 0 : weight);
+
+    point.position.x = radius * Math.sin(phi) * Math.cos(theta);
+    point.position.y = radius * Math.cos(phi);
+    point.position.z = radius * Math.sin(phi) * Math.sin(theta);
 
     point.lookAt(mesh.position);
 
