@@ -69,3 +69,15 @@ body {
   fill: none;
   stroke-width: 1px;
 }
+.equalizer svg #login-pattern path {
+  stroke: #f6ea3e;
+}
+.equalizer svg #signup-pattern path {
+  stroke: #86dd81;
+}
+.equalizer svg #resetPassword-pattern path {
+  stroke: #c54afb;
+}
+.equalizer svg #suspicious-pattern path {
+  stroke: #de4c4a;
+}

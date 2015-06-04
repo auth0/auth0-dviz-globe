@@ -11,7 +11,7 @@ var Equalizer = function(){
 	var height = size.height - size.padding * 2 - size.axisWidth;
 	var width = size.width - size.padding * 2 - size.axisWidth;
 
-	var eq = d3.select('.equalizer').append('svg')
+	var eq = d3.select('.equalizer svg')
 		.attr("width", size.width)
 	    .attr("height", size.height);
 
@@ -32,7 +32,7 @@ var Equalizer = function(){
 			.attr("transform", "translate(" + [ size.axisWidth, size.padding + size.axisWidth ] + ")")
 			.call(yAxis);
 
-	var types = {'signup':0, 'login':1, 'resetPassword':2, 'suspicious':3};
+	var types = {'signup':0, 'login':1, 'suspicious':2, 'resetPassword':3};
 	var typeNames = Object.keys(types);
 
 	Object.keys(types).forEach(function(t) {
@@ -82,7 +82,7 @@ var Equalizer = function(){
 				.attr("y", function(d) { return y(d.y + d.y0); })
 				.attr("height", function(d) { return height-y(d.y); })
 				.attr("width", x.rangeBand())
-				.style("fill", getTexture(index));
+				.style("fill", 'url(#'+ typeNames[index] +'-pattern)');
 
 			rects.transition()
 				.attr("x", function(d, i) { return x(i); })
@@ -92,15 +92,15 @@ var Equalizer = function(){
 
   		});
 
-		// var texts = bars.selectAll('text.xaxis').data(eqData);
-		// texts.enter()
-		// 		.append('text')
-		// 			.classed('xaxis',true)
-		// 		    .attr("x", function(d, i) { return x(i) + (x.rangeBand() / 2); }) 
-		// 			.attr("y", height + size.padding)
-		// 			.text(function(d){return d.x;});
+		var texts = bars.selectAll('text.xaxis').data(eqData[0]);
+		texts.enter()
+				.append('text')
+					.classed('xaxis',true)
+				    .attr("x", function(d, i) { return x(i) + (x.rangeBand() / 2); }) 
+					.attr("y", height + size.padding)
+					.text(function(d){return d.x;});
 
-		// texts.transition().attr("x", function(d, i) { return x(i) + (x.rangeBand()/2); });
+		texts.transition().attr("x", function(d, i) { return x(i) + (x.rangeBand()/2); });
 	}
 
 	function getTexture(i) {
@@ -110,8 +110,7 @@ var Equalizer = function(){
 		var texture = textures.lines()
 		    .orientation("horizontal")
 		    .size(5)
-			.strokeWidth(3)
-		    .stroke(colors(i));
+			.strokeWidth(3);
 
 		eq.call(texture);
 
