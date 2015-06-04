@@ -136,7 +136,8 @@ var Equalizer = function(){
 
 	this.pushData = function(d, type) {
 	    addData(d, type);
-	    updateData();
-	  };
+	};
+
+	this.updateData = updateData;
 
 }

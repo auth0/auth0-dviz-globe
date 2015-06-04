@@ -26,10 +26,17 @@ $.ajax( "http://metrics.it.auth0.com/counters")
 
 		    });
 
+        renderEq();
+
       })
       .fail(function() {
         alert( "error" );
       });
+
+function renderEq() {
+  equalizer.updateData();
+  setTimeout( renderEq , 500 + 500 * Math.random());
+}
 
 function updateCounters(){
 	$('.tokens .counter').html(counters.tokens);
