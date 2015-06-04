@@ -13,7 +13,7 @@ $.ajax( "http://metrics.it.auth0.com/counters")
 
         channel.bind('login', function(data) {
 	
-    			bubbles.pushData(data);
+    			if (bubbles) bubbles.pushData(data);
     			equalizer.pushData(data, 'login');
 
           if (Math.random() > 0.4) equalizer.pushData(data, 'signup');
@@ -43,3 +43,9 @@ function updateCounters(){
   $('.logins .counter').html(counters.logins);
   $('.apps .counter').html(counters.apps);
 }
+function testScroll(ev){
+    if(!bubbles.initialized && window.pageYOffset>(window.innerHeight)) {
+      bubbles.init();
+    }
+}
+window.onscroll=testScroll

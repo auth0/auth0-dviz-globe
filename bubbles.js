@@ -71,9 +71,7 @@ var Bubbles = function(){
     {name: 'soundcloud' , r: 10, x: 125, y:70}
   ];
 
-  updateData();
-
-  function updateData() {
+  function loadData() {
 
     x.domain([0,145]);
     y.domain([0,115]);
@@ -83,52 +81,17 @@ var Bubbles = function(){
           .enter()
         .append('circle')
           .attr('class', function(d) { return 'node '+d.name;})
+          .attr("transform", "translate(" + (width/2) + "," + (height/2) + ")")
+          .attr("r", 0)
+        .transition().delay(function(d,i){ return 50 * i; })
           .attr("transform", function(d) {return "translate(" + x(d.x) + "," + y(d.y) + ")"; })
           .attr("r", function(d) { return y(d.r); });
 
   };
 
-  // function updateData() {
-  //   if (bbData.length == 0) return;
-  //   var newdata = _.clone(bbData);
-  //   newdata = bubble.nodes({children:newdata}).filter(function(d) { return !d.children; });
-
-  //   var nodes = svg.selectAll("circle.node")
-  //       .data(newdata, function(d) { return d.name; });
-
-  //   nodes.enter().append("circle")
-  //       .classed("node", true)
-  //       .style("fill", function(d) { return color(d.name); });
-
-  //   nodes.exit().transition()
-  //       .attr("r", 0)
-  //       .remove();
-
-  //   nodes.transition()
-  //       .attr("transform", function(d) {return "translate(" + d.x + "," + d.y + ")"; })
-  //       .attr("r", function(d) { return d.r; });
-
-  //   var textNodes = svg.selectAll("text.node")
-  //       .data(newdata, function(d) { return d.name; });
-
-  //   textNodes.enter().append("text")
-  //       .classed("node", true)
-  //       .text(function(d){return d.name;});
-
-  //   textNodes.exit()
-  //       .remove();
-
-  //   textNodes.transition()
-  //       .attr("transform", function(d) {return "translate(" + d.x + "," + d.y + ")"; })
-  //       .attr("dy", ".3em")
-  //       .style("text-anchor", "middle");
-
-  // };
-
-
-  d3.select(self.frameElement).style("height", height + "px");
-
   this.pushData = function(d) {
+
+    console.log(d.strategy);
 
     var index = _.findIndex(bbData, function(e) {return e.name.toLowerCase() == d.strategy.toLowerCase();});
 
@@ -143,5 +106,12 @@ var Bubbles = function(){
         .attr('r', y(bbData[index].r));
 
   };
+  var self=this;
+  this.initialized = false;
+  this.init = function(){
+    if (self.initialized) return;
+    self.initialized = true;
+    loadData();
+  }
 
 };
