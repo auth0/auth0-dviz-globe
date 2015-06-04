@@ -20,42 +20,6 @@ var Bubbles = function(){
   var x = d3.scale.linear().range([0, width]);
   var y = d3.scale.linear().range([0, height]);
 
-  // var bbData = [];
-
-  // function addData(d) {
-
-  //   if (d.browser === undefined) return;
-
-  //   var item;
-  //   var index = _.findIndex(bbData, function(e) {return e.name.toLowerCase() == d.strategy.toLowerCase();});
-
-  //   if (index == -1) {
-  //     item = {
-  //       name: d.strategy,
-  //       stamps: []
-  //     }
-  //     bbData.push(item);
-  //     index = bbData.length - 1;
-  //   }
-  //   else {
-  //     item = bbData[index];
-  //   }
-
-  //   var now = Date.now();
-
-  //   item.stamps.push(now);
-
-  //   bbData.forEach(function(e){
-  //     e.stamps = _.filter(e.stamps, function(f) {
-  //       return f > Date.now() - timeout;
-  //     });
-  //     e.value = e.stamps.length;
-  //   });
-
-  //   bbData = _.filter(bbData, function(e) {return e.value > 0});
-
-  // }
-
   var bbData = [
     {name: 'facebook'   , r: 15, x: 20,  y:45},
     {name: 'googlePlus' , r: 11, x: 45,  y:20},
@@ -90,8 +54,6 @@ var Bubbles = function(){
   };
 
   this.pushData = function(d) {
-
-    console.log(d.strategy);
 
     var index = _.findIndex(bbData, function(e) {return e.name.toLowerCase() == d.strategy.toLowerCase();});
 
