@@ -1,5 +1,6 @@
 var Equalizer = function(){
 	
+	var barHeight = 7;
 	var timeout = 30 /* seconds */* 1000;
 	var size = {
 		height:400,
@@ -69,6 +70,12 @@ var Equalizer = function(){
 
 	}
 
+	function roundHeight(height) {
+
+		return Math.ceil(height / barHeight) * barHeight;
+
+	}
+
 	function updateData() {
 
 		var stackedData = d3.layout.stack()(eqData);
@@ -84,15 +91,15 @@ var Equalizer = function(){
 			rects.enter().append("rect")
 				.classed(typeNames[index],true)
 				.attr("x", function(d, i) { return x(i); })
-				.attr("y", function(d) { return y(d.y + d.y0); })
-				.attr("height", function(d) { return height-y(d.y); })
+				.attr("y", function(d) { return roundHeight(y(d.y + d.y0)); })
+				.attr("height", function(d) { return roundHeight(height-y(d.y)); })
 				.attr("width", x.rangeBand())
 				.style("fill", 'url(#'+ typeNames[index] +'-pattern)');
 
 			rects.transition()
 				.attr("x", function(d, i) { return x(i); })
-				.attr("y", function(d) { return y(d.y + d.y0); })
-				.attr("height", function(d) { return height-y(d.y); })
+				.attr("y", function(d) { return roundHeight(y(d.y + d.y0)); })
+				.attr("height", function(d) { return roundHeight(height-y(d.y)); })
 				.attr("width", x.rangeBand());
 
   		});
