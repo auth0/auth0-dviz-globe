@@ -41,18 +41,18 @@ var Equalizer = function(){
 
 	function addData(d, type) {
 
-		if (d.device === undefined) return;
+		if (d.browser === undefined) return;
 
 		var item;
 		var index = _.findIndex(eqData[types[type]], 
-			function(e) {return e.x.toLowerCase() == d.device.toLowerCase();}
+			function(e) {return e.x.toLowerCase() == d.browser.toLowerCase();}
 		);
 
 		if (index === -1) {
 
 			Object.keys(types).forEach(function(t) {
 				eqData[types[t]].push({
-					x: d.device,
+					x: d.browser,
 					y: 0
 				})
 			}) 

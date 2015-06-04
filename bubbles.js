@@ -21,7 +21,7 @@ var Bubbles = function(){
 
   function addData(d) {
 
-    if (d.device === undefined) return;
+    if (d.browser === undefined) return;
 
     var item;
     var index = _.findIndex(bbData, function(e) {return e.name.toLowerCase() == d.strategy.toLowerCase();});
