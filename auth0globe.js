@@ -95,12 +95,12 @@ if(!Detector.webgl){
 
   $('#loading').show();
 
-  $.ajax( "http://auth0-logins-processor.herokuapp.com/list")
+  $.ajax( "http://metrics.it.auth0.com/list")
       .done(function(d) {
         data[23] = d;
         loadData(23); 
 
-        $.ajax( "http://auth0-logins-processor.herokuapp.com/history")
+        $.ajax( "http://metrics.it.auth0.com/history")
           .done(function(d) {
             d[23] = data[23];
             data = d;
@@ -149,7 +149,7 @@ function loadData(index) {
 
 function preloadData(index, date, afterLoadCallback) {
   if (index == -1) return;
-  $.ajax( "https://auth0-logins-processor.herokuapp.com/list", {data:{filter:buildCollectionName(date)}})
+  $.ajax( "https://metrics.it.auth0.com/list", {data:{filter:buildCollectionName(date)}})
       .done(function(d) {
         data[index] = d;
         afterLoadCallback(index);

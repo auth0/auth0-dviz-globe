@@ -5,11 +5,13 @@ var Equalizer = function(){
 		height:400,
 		width: window.innerWidth,
 		padding:20,
-		axisWidth:40
+		xAxisWidth:40,
+		yAxisHeight:80
 	}
+	var xAxisCircleRadius = 25;
 	var eqData = [];
-	var height = size.height - size.padding * 2 - size.axisWidth;
-	var width = size.width - size.padding * 2 - size.axisWidth;
+	var height = size.height - size.padding * 2 - size.yAxisHeight;
+	var width = size.width - size.padding * 2 - size.xAxisWidth;
 
 	var eq = d3.select('.equalizer svg')
 		.attr("width", size.width)
@@ -17,7 +19,8 @@ var Equalizer = function(){
 
 	var texturesArr = [];
 
-	var bars = eq.append('g').attr("transform", "translate(" + [ size.padding + size.axisWidth,size.padding + size.axisWidth] + ")");
+	var bars = eq.append('g').attr("transform", "translate(" + [ size.padding + size.xAxisWidth,size.padding] + ")");
+	var xAxisEl = eq.append('g').attr('class','x axis').attr("transform", function(d,i) {return "translate(" + [size.padding + size.xAxisWidth, size.height - size.yAxisHeight + 10] + ")"; });;
 
 	var x = d3.scale.ordinal().rangeBands([0, width], 0.1);
 	var y = d3.scale.linear().range([height, 0]);
@@ -29,7 +32,7 @@ var Equalizer = function(){
 
 	var yAxisEl = eq.append("g")
 			.attr("class", "y axis")
-			.attr("transform", "translate(" + [ size.axisWidth, size.padding + size.axisWidth ] + ")")
+			.attr("transform", "translate(" + [ size.xAxisWidth, size.padding] + ")")
 			.call(yAxis);
 
 	var types = {'signup':0, 'login':1, 'suspicious':2, 'resetPassword':3};
@@ -53,8 +56,10 @@ var Equalizer = function(){
 			Object.keys(types).forEach(function(t) {
 				eqData[types[t]].push({
 					x: d.browser,
-					y: 0
+					y: 0,
+					cleanUpName:d.browser.replace(' ', '_').toLowerCase()
 				})
+				console.log(d.browser.replace(' ', '_').toLowerCase());
 			}) 
 
 			index = eqData[types[type]].length - 1;
@@ -92,15 +97,26 @@ var Equalizer = function(){
 
   		});
 
-		var texts = bars.selectAll('text.xaxis').data(eqData[0]);
-		texts.enter()
-				.append('text')
-					.classed('xaxis',true)
-				    .attr("x", function(d, i) { return x(i) + (x.rangeBand() / 2); }) 
-					.attr("y", height + size.padding)
-					.text(function(d){return d.x;});
+		var xItems = xAxisEl.selectAll('g.item')
+				.data(eqData[0]);
+		
+		var xItem = xItems.enter().append('g')
+				.classed('item',true)
+				.attr("transform", function(d,i) {return "translate(" + [x(i) + (x.rangeBand() / 2), 0] + ")"; });
 
-		texts.transition().attr("x", function(d, i) { return x(i) + (x.rangeBand()/2); });
+		xItem.append('circle')
+				.attr('class',function(d){ return d.cleanUpName; },true)
+				.attr("r",xAxisCircleRadius);
+
+		xItem.append('image')
+				.attr('xlink:href', function(d){ return 'img/browser/' + d.cleanUpName + '.png'; })
+				.attr('x',-25)
+				.attr('y',-25)
+				.attr('height',50)
+				.attr('width',50);
+
+		xItems.transition()
+				.attr("transform", function(d,i) {return "translate(" + [x(i) + (x.rangeBand() / 2), 0] + ")"; });
 	}
 
 	function getTexture(i) {

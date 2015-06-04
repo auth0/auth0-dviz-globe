@@ -6,7 +6,7 @@ var channel = pusher.subscribe('world_map');
 
 var counters = null;
 
-$.ajax( "http://auth0-logins-processor.herokuapp.com/settings")
+$.ajax( "http://metrics.it.auth0.com/counters")
       .done(function(d) {
 
         counters = d;

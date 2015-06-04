@@ -81,3 +81,6 @@ body {
 .equalizer svg #suspicious-pattern path {
   stroke: #de4c4a;
 }
+.equalizer svg g.x.axis .item circle {
+  fill: #fffeff;
+}
