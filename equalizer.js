@@ -60,19 +60,12 @@ var Equalizer = function(){
 					y: 0,
 					cleanUpName:d.browser.replace(' ', '_').toLowerCase()
 				})
-				console.log(d.browser.replace(' ', '_').toLowerCase());
 			}) 
 
 			index = eqData[types[type]].length - 1;
 		}
 
 		item = eqData[types[type]][index].y++;
-
-	}
-
-	function roundHeight(height) {
-
-		return Math.ceil(height / barHeight) * barHeight;
 
 	}
 
@@ -91,15 +84,15 @@ var Equalizer = function(){
 			rects.enter().append("rect")
 				.classed(typeNames[index],true)
 				.attr("x", function(d, i) { return x(i); })
-				.attr("y", function(d) { return roundHeight(y(d.y + d.y0)); })
-				.attr("height", function(d) { return roundHeight(height-y(d.y)); })
+				.attr("y", function(d) { return y(d.y + d.y0); })
+				.attr("height", function(d) { return height-y(d.y); })
 				.attr("width", x.rangeBand())
 				.style("fill", 'url(#'+ typeNames[index] +'-pattern)');
 
 			rects.transition()
 				.attr("x", function(d, i) { return x(i); })
-				.attr("y", function(d) { return roundHeight(y(d.y + d.y0)); })
-				.attr("height", function(d) { return roundHeight(height-y(d.y)); })
+				.attr("y", function(d) { return y(d.y + d.y0); })
+				.attr("height", function(d) { return height-y(d.y); })
 				.attr("width", x.rangeBand());
 
   		});

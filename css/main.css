@@ -84,3 +84,39 @@ body {
 .equalizer svg g.x.axis .item circle {
   fill: #fffeff;
 }
+.bubbles .node.facebook {
+  fill: #465f95;
+}
+.bubbles .node.googlePlus {
+  fill: #BA4C3A;
+}
+.bubbles .node.wordpress {
+  fill: #464646;
+}
+.bubbles .node.github {
+  fill: #353535;
+}
+.bubbles .node.instagram {
+  fill: #6081a1;
+}
+.bubbles .node.linkedin {
+  fill: #487eb3;
+}
+.bubbles .node.twitter {
+  fill: #60a0fc;
+}
+.bubbles .node.dropbox {
+  fill: #609ee6;
+}
+.bubbles .node.tumblr {
+  fill: #6086b4;
+}
+.bubbles .node.blogger {
+  fill: #df6019;
+}
+.bubbles .node.yahoo {
+  fill: #5b216c;
+}
+.bubbles .node.soundcloud {
+  fill: #e0631f;
+}
