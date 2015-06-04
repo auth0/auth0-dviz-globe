@@ -4,7 +4,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background: #000 url("/img/loading.gif") center center no-repeat;
+  background: #000 url("img/loading.gif") center center no-repeat;
   color: #fff;
   font-family: sans-serif;
   font-size: 13px;
@@ -22,7 +22,7 @@ body {
   text-align: center;
 }
 #container {
-  background: #000 url("/img/stars.png");
+  background: #000 url("img/stars.png");
 }
 #loading {
   position: absolute;
@@ -88,7 +88,7 @@ body {
   fill: #465f95;
 }
 .bubbles .node.googlePlus {
-  fill: #BA4C3A;
+  fill: #ba4c3a;
 }
 .bubbles .node.wordpress {
   fill: #464646;
