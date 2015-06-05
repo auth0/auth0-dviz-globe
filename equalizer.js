@@ -8,6 +8,7 @@ var Equalizer = function(){
 	var width = window.innerWidth;
 	var browserIcon = 50;
 	var barsHeight = height - browserIcon;
+	var backgroundLineHeight = 7;
 
 	var eq = d3.select('.equalizer')
 			.style('height', height + 'px');

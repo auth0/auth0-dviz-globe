@@ -81,16 +81,16 @@ body {
   position: absolute;
 }
 .equalizer .content .col .type.signup {
-  background: #86dd81;
+  background: transparent url("../img/bar_green.png");
 }
 .equalizer .content .col .type.login {
-  background: #f6ea3e;
+  background: transparent url("../img/bar_yellow.png");
 }
 .equalizer .content .col .type.suspicious {
-  background: #de4c4a;
+  background: transparent url("../img/bar_red.png");
 }
 .equalizer .content .col .type.resetPassword {
-  background: #c54afb;
+  background: transparent url("../img/bar_purple.png");
 }
 .bubbles .node.facebook {
   fill: #465f95;
