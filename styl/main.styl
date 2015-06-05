@@ -1,97 +1,105 @@
 html 
-  height: 100%;
+  height: 100%
 
 body 
-  margin: 0;
-  padding: 0;
-  background: #000000 url('../img/loading.gif') center center no-repeat;
-  color: #ffffff;
-  font-family: sans-serif;
-  font-size: 13px;
-  line-height: 20px;
-  height: 100%;
+  margin: 0
+  padding: 0
+  background: #000000 url('../img/loading.gif') center center no-repeat
+  color: #ffffff
+  font-family: sans-serif
+  font-size: 13px
+  line-height: 20px
+  height: 100%
 
 
 #globe 
-  position:relative;
+  position:relative
 
   .controls 
-    position: absolute;
-    bottom: 5px;
-    left: 0;
-    right: 0;
-    text-align: center;
+    position: absolute
+    bottom: 5px
+    left: 0
+    right: 0
+    text-align: center
   
 #container 
-  background: #000000 url('../img/stars.png');
+  background: #000000 url('../img/stars.png')
 
 
 #loading 
-  position: absolute;
-  top: 30px;
-  left: 20px;
-  font-size: 18px;
-  color: #ffffff;
+  position: absolute
+  top: 30px
+  left: 20px
+  font-size: 18px
+  color: #ffffff
 
 
 
 #filter 
-  z-index: 999;
-  position: absolute;
-  top:100px;
-  left: 0;
-  width: 200px;
+  z-index: 999
+  position: absolute
+  top:100px
+  left: 0
+  width: 200px
 
   ul 
-    list-style: none;
+    list-style: none
 
     li
-      cursor: pointer;
+      cursor: pointer
 
       &:hover
-        font-weight: bold;
+        font-weight: bold
 
 
 .counters article 
-  width: 30%;
-  margin:auto;
+  width: 30%
+  margin:auto
 
   &.tokens 
-    float:left;
+    float:left
 
   &.logins 
-    float:right;
+    float:right
 
-.equalizer 
-  svg 
-    text
-      fill:#FFFFFF;
+.equalizer
+  
+  .content 
+    position:relative
+
+    .col
+      position:absolute
       
-      &.xaxis
-        text-anchor:middle;
-        font-size:12px;
+      .detail
+        bottom:10px
+        height:30px
+        position:absolute
+        width:100%
         
+        .icon
+          width:50px
+          height:50px
+          margin:auto
+          border-radius:25px
+          background:#FFFEFF url('../img/browser/generic.png') center center no-repeat
+          background-size:40px 40px
+          
+
+      .type
+        position:absolute
         
-    path.domain
-      stroke:#FFFFFF;
-      fill:none;
-      stroke-width: 1px;
-      
-    #login-pattern path
-      stroke:#F6EA3E;
-      
-    #signup-pattern path
-      stroke:#86DD81;
+        &.signup
+          background: #86DD81
+          
+        &.login
+          background: #F6EA3E
+          
+        &.suspicious
+          background: #DE4C4A
+          
+        &.resetPassword
+          background: #C54AFB
 
-    #resetPassword-pattern path
-      stroke:#C54AFB;
-      
-    #suspicious-pattern path
-      stroke:#DE4C4A;
-
-    g.x.axis .item
-      circle
-        fill:#FFFEFF
         
 .bubbles
   .node

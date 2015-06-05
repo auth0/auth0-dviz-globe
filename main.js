@@ -17,8 +17,8 @@ $.ajax( "http://metrics.it.auth0.com/counters")
     			equalizer.pushData(data, 'login');
 
           if (Math.random() > 0.4) equalizer.pushData(data, 'signup');
-          if (Math.random() > 0.2) equalizer.pushData(data, 'resetPassword');
-          if (Math.random() > 0.05) equalizer.pushData(data, 'suspicious');
+          if (Math.random() > 0.05) equalizer.pushData(data, 'resetPassword');
+          if (Math.random() > 0.025) equalizer.pushData(data, 'suspicious');
 
     			counters.logins++;
 
