@@ -1,21 +1,11 @@
 var Bubbles = function(){
 
   var width = window.innerWidth,
-      height=width / 1.85,
-      format = d3.format(",d"),
-      color = d3.scale.category10();
+      height=width / 1.85;
 
-  var timeout = 30 /* seconds */* 1000;
-
-  var bubble = d3.layout.pack()
-      .sort(null)
-      .size([width, height])
-      .padding(100);
-
-  var svg = d3.select(".bubbles").append("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("class", "bubble");
+  var svg = d3.select(".bubbles")
+        .style("width", width + "px")
+        .style("height", height + "px");
 
   var x = d3.scale.linear().range([0, width]);
   var y = d3.scale.linear().range([0, height]);
@@ -40,16 +30,21 @@ var Bubbles = function(){
     x.domain([0,145]);
     y.domain([0,115]);
 
-    var nodes = svg.selectAll("circle.node")
+    var nodes = svg.selectAll("div.node")
         .data(bbData)
           .enter()
-        .append('circle')
+        .append('div')
           .attr('class', function(d) { return 'node '+d.name;})
-          .attr("transform", "translate(" + (width/2) + "," + (height/2) + ")")
-          .attr("r", 0)
+          .style('top', height/2 + "px")
+          .style('left', width/2 + "px")
+          .style("height", 0)
+          .style("width", 0)
         .transition().delay(function(d,i){ return 50 * i; })
-          .attr("transform", function(d) {return "translate(" + x(d.x) + "," + y(d.y) + ")"; })
-          .attr("r", function(d) { return y(d.r); });
+          .style("top", function(d) { return y(d.y) + "px"; })
+          .style("left", function(d) { return x(d.x) + "px"; })
+          .style("height", function(d) { return x(d.r) + "px"; })
+          .style("width", function(d) { return x(d.r) + "px"; })
+          .style("border-radius", function(d) { return (x(d.r)/2) + "px"; });
 
   };
 
@@ -61,11 +56,19 @@ var Bubbles = function(){
       return;
     }
 
-    svg.selectAll("circle.node." + d.strategy)
+    svg.selectAll(".node." + d.strategy)
       .transition()
-        .attr('r', y(bbData[index].r * 1.2))
+        .style('width', x(bbData[index].r * 1.2) + 'px')
+        .style('height', x(bbData[index].r * 1.2) + 'px')
+        .style('border-radius', x(bbData[index].r * 1.2 / 2) + 'px')
+        .style('left', x(bbData[index].x - bbData[index].r * 0.1) + 'px')
+        .style('top',y(bbData[index].y - bbData[index].r * 0.1) + 'px')
       .transition()
-        .attr('r', y(bbData[index].r));
+        .style('border-radius', x(bbData[index].r / 2) + 'px')
+        .style('width', x(bbData[index].r) + 'px')
+        .style('height', x(bbData[index].r) + 'px')
+        .style('left', x(bbData[index].x) + 'px')
+        .style('top',y(bbData[index].y) + 'px');
 
   };
   var self=this;
