@@ -4,9 +4,9 @@ var Equalizer = function(){
 	
 	var eqData = [];
 
-	var height = 400;
+	var height = 420;
 	var width = window.innerWidth;
-	var browserIcon = 50;
+	var browserIcon = 70;
 	var barsHeight = height - browserIcon;
 	var backgroundLineHeight = 7;
 
@@ -106,15 +106,18 @@ var Equalizer = function(){
 		
 		colTypes.enter().append('div')
 			.attr('class', function(d){return 'type ' + d.type;})
-			.style("top", function(d) { return (y(d.y + d.y0))+ 'px'; })
+			.style("top", function(d) { return ceilHeight(y(d.y + d.y0))+ 'px'; })
 			.style("left", 0)
-			.style("height", function(d) { return (barsHeight-y(d.y))+ 'px'; })
+			.style("height", function(d) { return ceilHeight(barsHeight-y(d.y))+ 'px'; })
 			.style('width', "100%");
 
 		colTypes.transition()
-			.style("top", function(d) { return (y(d.y + d.y0))+ 'px'; })
-			.style("height", function(d) { return (barsHeight-y(d.y))+ 'px'; });
+			.style("top", function(d) { return ceilHeight(y(d.y + d.y0))+ 'px'; })
+			.style("height", function(d) { return ceilHeight(barsHeight-y(d.y))+ 'px'; });
+	}
 
+	function ceilHeight(value) {
+		return Math.ceil(Math.ceil(value)/backgroundLineHeight) * backgroundLineHeight;
 	}
 
 
