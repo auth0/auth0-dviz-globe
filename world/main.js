@@ -25,6 +25,9 @@ function init()
 	ratamahatta.character.object3d.lookAt(new THREE.Vector3(0,0,0));
 	ratamahatta.character.object3d.rotateOnAxis (new THREE.Vector3(1,0,0), -90)
 
+	setTimeout(function(){ratamahatta.setAnimationName("jump")},
+		2000);
+
 	scene.add(ratamahatta.character.object3d);
 
 	onRenderFcts.push(function(delta){
