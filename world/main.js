@@ -161,11 +161,7 @@ function animate()
 
 function update()
 {
-	if ( keyboard.pressed("z") ) 
-	{ 
-		// do something
-	}
-	
+	controls.rotateLeft(0.001);
 	controls.update();
 	stats.update();
 }
