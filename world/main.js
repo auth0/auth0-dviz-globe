@@ -7,6 +7,8 @@ var clock = new THREE.Clock();
 // custom global variables
 var cube;
 
+var ratamahatta, onRenderFcts = [];
+
 init();
 animate();
 
@@ -15,6 +17,21 @@ function init()
 {
 	// SCENE
 	scene = new THREE.Scene();
+
+
+	ratamahatta = new THREEx.MD2CharacterRatmahatta()
+
+	ratamahatta.character.object3d.position.set(0,0,150);
+	ratamahatta.character.object3d.lookAt(new THREE.Vector3(0,0,0));
+	ratamahatta.character.object3d.rotateOnAxis (new THREE.Vector3(1,0,0), -90)
+
+	scene.add(ratamahatta.character.object3d);
+
+	onRenderFcts.push(function(delta){
+		ratamahatta.update(delta)
+	})
+
+
 	// CAMERA
 	var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
 	var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
@@ -38,6 +55,10 @@ function init()
 	THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0) });
 	// CONTROLS
 	controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+	controls.minDistance = 400;
+	controls.maxDistance = 400; //200 for zoomed
+
 	// STATS
 	stats = new Stats();
 	stats.domElement.style.position = 'absolute';
@@ -152,17 +173,27 @@ function init()
     renderer.setClearColor(0x000000, 0.0);
 }
 
-function animate() 
+function animate(nowMsec) 
 {
     requestAnimationFrame( animate );
 	render();		
-	update();
+	update(nowMsec);
 }
 
-function update()
+var lastTimeMsec= null;
+function update(nowMsec)
 {
 	controls.rotateLeft(0.001);
 	controls.update();
+
+	lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+	var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+	lastTimeMsec	= nowMsec
+
+	onRenderFcts.forEach(function(onRenderFct){
+		onRenderFct(deltaMsec/1000, nowMsec/1000)
+	})
+
 	stats.update();
 }
 
