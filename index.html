@@ -6,68 +6,95 @@
     <link href="css/main.css" rel="stylesheet" />
   </head>
   <body>
+    <!-- ------ Custom Shader Code for atmospheric glow ------ -->
+    <script id="vertexShaderAtmosphere" type="x-shader/x-vertex">
+      varying vec3 vNormal;
+      void main() 
+      {
+          vNormal = normalize( normalMatrix * normal );
+          gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+      }
+    </script>
+    <!-- fragment shader a.k.a. pixel shader -->
+    <script id="fragmentShaderAtmosphere" type="x-shader/x-vertex"> 
+      uniform float c;
+      uniform float p;
+      varying vec3 vNormal;
+      void main() 
+      {
+        float intensity = pow( c - dot( vNormal, vec3( 0.0, 0.0, 1.0 ) ), p ); 
+        gl_FragColor = vec4( 1.0, 1.0, 1.0, 1.0 ) * intensity;
+      }
+    </script>
+    <!-- ----------------------------------------------------------- -->
 
-  <div id="globe">
-    <div id="filter">
-      <ul>
-        <li><span onclick="updateStrategyFilter('')">No filter</span></li>
-      </ul>
+    <div id="globe">
+      <div id="filter">
+        <ul>
+          <li><span onclick="updateStrategyFilter('')">No filter</span></li>
+        </ul>
+      </div>
+
+      <div id="container3js"></div>
+      <div id="loading" style="display:none;"></div>
+      <div class="controls">
+
+          <input disabled=true type="range" id="timelapse" value="23" max="23" min="1" oninput="loadData(this.value);" onchange="loadData(this.value);" />
+          <input disabled=true type="button" id="play" onclick="PlayTimelapse()" value="Play" />
+
+      </div>
     </div>
 
-    <div id="container"></div>
-    <div id="loading" style="display:none;"></div>
-    <div class="controls">
+    <div class="counters">
+      
+      <article class="tokens">
+          <header>Tokens generated</header>
+          <p class="counter">#######</p>
+          <p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ultrices risus et molestie facilisis. Donec felis lorem, porta sed elit nec, convallis consequat nulla. Aliquam a sagittis ipsum. Duis vel consectetur libero, et ultricies lorem. Curabitur in malesuada sem, at finibus mauris</p>
+      </article>
 
-        <input disabled=true type="range" id="timelapse" value="23" max="23" min="1" oninput="loadData(this.value);" onchange="loadData(this.value);" />
-        <input disabled=true type="button" id="play" onclick="PlayTimelapse()" value="Play" />
+      <article class="logins">
+          <header>Logins</header>
+          <p class="counter">#######</p>
+          <p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ultrices risus et molestie facilisis. Donec felis lorem, porta sed elit nec, convallis consequat nulla. Aliquam a sagittis ipsum. Duis vel consectetur libero, et ultricies lorem. Curabitur in malesuada sem, at finibus mauris</p>
+      </article>
+
+      <article class="apps">
+          <header>Apps Created</header>
+          <p class="counter">#######</p>
+          <p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ultrices risus et molestie facilisis. Donec felis lorem, porta sed elit nec, convallis consequat nulla. Aliquam a sagittis ipsum. Duis vel consectetur libero, et ultricies lorem. Curabitur in malesuada sem, at finibus mauris</p>
+      </article>
 
     </div>
-  </div>
 
-  <div class="counters">
-    
-    <article class="tokens">
-        <header>Tokens generated</header>
-        <p class="counter">#######</p>
-        <p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ultrices risus et molestie facilisis. Donec felis lorem, porta sed elit nec, convallis consequat nulla. Aliquam a sagittis ipsum. Duis vel consectetur libero, et ultricies lorem. Curabitur in malesuada sem, at finibus mauris</p>
-    </article>
+    <div class="equalizer"></div>
+    <div class="bubbles"></div>
 
-    <article class="logins">
-        <header>Logins</header>
-        <p class="counter">#######</p>
-        <p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ultrices risus et molestie facilisis. Donec felis lorem, porta sed elit nec, convallis consequat nulla. Aliquam a sagittis ipsum. Duis vel consectetur libero, et ultricies lorem. Curabitur in malesuada sem, at finibus mauris</p>
-    </article>
+    <script src="https://js.pusher.com/2.2/pusher.min.js"></script>
 
-    <article class="apps">
-        <header>Apps Created</header>
-        <p class="counter">#######</p>
-        <p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ultrices risus et molestie facilisis. Donec felis lorem, porta sed elit nec, convallis consequat nulla. Aliquam a sagittis ipsum. Duis vel consectetur libero, et ultricies lorem. Curabitur in malesuada sem, at finibus mauris</p>
-    </article>
+    <script src="world/js/Three58.js"></script>
+    <script src="world/js/Detector.js"></script>
+    <script src="world/js/Stats.js"></script>
+    <script src="world/js/OrbitControls.js"></script>
+    <script src="world/js/THREEx.KeyboardState.js"></script>
+    <script src="world/js/THREEx.FullScreen.js"></script>
+    <script src="world/js/THREEx.WindowResize.js"></script>
+    <script src="world/js/postprocessing/EffectComposer.js"></script>
+    <script src="world/js/postprocessing/RenderPass.js"></script>
+    <script src="world/js/postprocessing/ShaderPass.js"></script>
+    <script src="world/js/postprocessing/MaskPass.js"></script>
+    <script src="world/js/shaders/CopyShader.js"></script>
+    <script src="world/js/shaders/AdditiveBlendShader.js"></script>
+    <script src="world/main.js"></script>
 
-  </div>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.9.3/lodash.min.js"></script>
 
-  <div class="equalizer"></div>
-  <div class="bubbles"></div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 
-  <script src="https://js.pusher.com/2.2/pusher.min.js"></script>
-  
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/stats.js/r11/Stats.js"></script>
-  <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.9.3/lodash.min.js"></script>
-  <script type="text/javascript" src="third-party/Three/ThreeWebGL.js"></script>
-  <script type="text/javascript" src="third-party/Three/ThreeExtras.js"></script>
-  <script type="text/javascript" src="third-party/Three/RequestAnimationFrame.js"></script>
-  <script type="text/javascript" src="third-party/Three/Detector.js"></script>
-  <script type="text/javascript" src="globe.js"></script>
-  <script type="text/javascript" src="auth0globe.js"></script>
-  
-
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-  <script src="http://riccardoscalco.github.io/textures/textures.min.js"></script>
-  <script type="text/javascript" src="equalizer.js"></script>
-  <script type="text/javascript" src="bubbles.js"></script>
-
-  <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="js/equalizer.js"></script>
+    <script type="text/javascript" src="js/bubbles.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
 
 
 
