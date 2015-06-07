@@ -37,17 +37,15 @@ var Bubbles = function(){
         .data(bbData)
           .enter()
         .append('div')
-          .attr('class', function(d) { return 'node '+d.name;})
-          .style("left", (width/2)+'px')
-          .style("top", (height/2) + "px")
-          .style("width", 0)
-          .style("height", 0)
+          .attr('class', function(d) { return 'node '+d.name;});
 
-    nodes
+    setTimeout(function(){
+      svg.selectAll("div.node")
           .style("left", function(d) { return x(d.x)+'px'; })
           .style("top", function(d) { return y(d.y)+'px'; })
           .style("width", function(d) { return y(d.r)+'px'; })
           .style("height", function(d) { return y(d.r)+'px'; });
+        }, 500);
 
   };
 

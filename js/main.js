@@ -4,34 +4,29 @@ var equalizer = new Equalizer();
 var pusher = new Pusher('54da1f9bddbf14929983');
 var channel = pusher.subscribe('world_map');
 
+var loginCount = 0;
 var counters = null;
 
-$.ajax( "http://metrics.it.auth0.com/counters")
-      .done(function(d) {
+d3.json("http://metrics.it.auth0.com/counters", function(err, data) {
+  counters = data;
+  updateCounters();
+  renderEq();
+})
 
-        counters = d;
+channel.bind('login', function(data) {
 
-        channel.bind('login', function(data) {
-	
-    			if (bubbles) bubbles.pushData(data);
-    			equalizer.pushData(data, 'login');
+    if (bubbles.initialized) bubbles.pushData(data);
+    equalizer.pushData(data, 'login');
 
-          if (Math.random() > 0.4) equalizer.pushData(data, 'signup');
-          if (Math.random() > 0.05) equalizer.pushData(data, 'resetPassword');
-          if (Math.random() > 0.025) equalizer.pushData(data, 'suspicious');
+    if (Math.random() > 0.4) equalizer.pushData(data, 'signup');
+    if (Math.random() > 0.05) equalizer.pushData(data, 'resetPassword');
+    if (Math.random() > 0.025) equalizer.pushData(data, 'suspicious');
 
-    			counters.logins++;
+    loginCount++;
 
-    			updateCounters();
+    updateCounters();
 
-		    });
-
-        renderEq();
-
-      })
-      .fail(function() {
-        alert( "error" );
-      });
+});
 
 function renderEq() {
   equalizer.updateData();
@@ -39,13 +34,17 @@ function renderEq() {
 }
 
 function updateCounters(){
-	$('.tokens .counter').html(counters.tokens);
-  $('.logins .counter').html(counters.logins);
-  $('.apps .counter').html(counters.apps);
+	d3.select('.tokens .counter').html(counters.tokens);
+  d3.select('.logins .counter').html(counters.logins + loginCount);
+  d3.select('.apps .counter').html(counters.apps);
 }
+
 function testScroll(ev){
-    if(!bubbles.initialized && window.pageYOffset>(window.innerHeight/2)) {
+  if(!bubbles.initialized){
+    var bubblesPosition = document.getElementById('bubbles').getBoundingClientRect();
+    if(window.pageYOffset >= bubblesPosition.top) {
       bubbles.init();
     }
+  }
 }
 window.onscroll=testScroll
