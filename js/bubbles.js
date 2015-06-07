@@ -6,8 +6,8 @@ var Bubbles = function(){
   var timeout = 30 /* seconds */* 1000;
 
   var svg = d3.select(".bubbles")//.append("svg")
-      .attr("width", width)
-      .attr("height", height)
+      .style("width", width+"px")
+      .style("height", height+"px")
       .attr("class", "bubbles");
 
   var x = d3.scale.linear().range([0, width]);
@@ -30,7 +30,7 @@ var Bubbles = function(){
 
   function loadData() {
 
-    x.domain([0,145]);
+    x.domain([10,145]);
     y.domain([0,115]);
 
     var nodes = svg.selectAll("div.node")

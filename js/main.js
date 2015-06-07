@@ -44,7 +44,7 @@ function updateCounters(){
   $('.apps .counter').html(counters.apps);
 }
 function testScroll(ev){
-    if(!bubbles.initialized && window.pageYOffset>(window.innerHeight)) {
+    if(!bubbles.initialized && window.pageYOffset>(window.innerHeight/2)) {
       bubbles.init();
     }
 }
