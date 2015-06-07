@@ -97,7 +97,7 @@ var Equalizer = function(){
 			.classed('detail',true)
 			.append('div').classed('icon',true);
 
-		rects.transition()
+		rects
 			.style("width", x.rangeBand() + 'px')
 			.style("left", function(d, i) { return (x(i))+ 'px'; });
 
@@ -111,7 +111,7 @@ var Equalizer = function(){
 			.style("height", function(d) { return ceilHeight(barsHeight-y(d.y))+ 'px'; })
 			.style('width', "100%");
 
-		colTypes.transition()
+		colTypes
 			.style("top", function(d) { return ceilHeight(y(d.y + d.y0))+ 'px'; })
 			.style("height", function(d) { return ceilHeight(barsHeight-y(d.y))+ 'px'; });
 	}

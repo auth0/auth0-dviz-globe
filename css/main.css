@@ -21,9 +21,6 @@ body {
   right: 0;
   text-align: center;
 }
-#container {
-  background: #000 url("../img/stars.png");
-}
 #loading {
   position: absolute;
   top: 30px;
@@ -79,6 +76,8 @@ body {
 }
 .equalizer .content .col .type {
   position: absolute;
+  -webkit-transition: width 0.5s, height 0.5s, left 0.5s, top 0.5s;
+  transition: width 0.5s, height 0.5s, left 0.5s, top 0.5s;
 }
 .equalizer .content .col .type.signup {
   background: transparent url("../img/bar_green.png");
