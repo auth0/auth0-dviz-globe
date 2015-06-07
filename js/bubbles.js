@@ -1,38 +1,31 @@
 var Bubbles = function(){
 
   var width = window.innerWidth,
-      height=width / 1.85,
-      format = d3.format(",d"),
-      color = d3.scale.category10();
+      height=width / 1.85;
 
   var timeout = 30 /* seconds */* 1000;
 
-  var bubble = d3.layout.pack()
-      .sort(null)
-      .size([width, height])
-      .padding(100);
-
-  var svg = d3.select(".bubbles").append("svg")
+  var svg = d3.select(".bubbles")//.append("svg")
       .attr("width", width)
       .attr("height", height)
-      .attr("class", "bubble");
+      .attr("class", "bubbles");
 
   var x = d3.scale.linear().range([0, width]);
   var y = d3.scale.linear().range([0, height]);
 
   var bbData = [
-    {name: 'facebook'   , r: 15, x: 20,  y:45},
-    {name: 'googlePlus' , r: 11, x: 45,  y:20},
-    {name: 'wordpress'  , r: 9,  x: 30,  y:80},
-    {name: 'github'     , r: 13, x: 55,  y:55},
-    {name: 'instagram'  , r: 9,  x: 55,  y:90},
-    {name: 'linkedin'   , r: 10, x: 80,  y:40},
-    {name: 'twitter'    , r: 10, x: 100, y:60},
-    {name: 'dropbox'    , r: 10, x: 105, y:30},
-    {name: 'tumblr'     , r: 6,  x: 125, y:40},
-    {name: 'blogger'    , r: 10, x: 80,  y:80},
-    {name: 'yahoo'      , r: 6,  x: 105, y:95},
-    {name: 'soundcloud' , r: 10, x: 125, y:70}
+    {name: 'facebook'   , r: 30, x: 20,  y:45},
+    {name: 'googlePlus' , r: 22, x: 45,  y:20},
+    {name: 'wordpress'  , r: 18, x: 30,  y:80},
+    {name: 'github'     , r: 26, x: 55,  y:55},
+    {name: 'instagram'  , r: 18, x: 55,  y:90},
+    {name: 'linkedin'   , r: 20, x: 80,  y:40},
+    {name: 'twitter'    , r: 20, x: 100, y:60},
+    {name: 'dropbox'    , r: 20, x: 105, y:30},
+    {name: 'tumblr'     , r: 12, x: 125, y:40},
+    {name: 'blogger'    , r: 20, x: 80,  y:80},
+    {name: 'yahoo'      , r: 12, x: 105, y:95},
+    {name: 'soundcloud' , r: 20, x: 125, y:70}
   ];
 
   function loadData() {
@@ -40,16 +33,21 @@ var Bubbles = function(){
     x.domain([0,145]);
     y.domain([0,115]);
 
-    var nodes = svg.selectAll("circle.node")
+    var nodes = svg.selectAll("div.node")
         .data(bbData)
           .enter()
-        .append('circle')
+        .append('div')
           .attr('class', function(d) { return 'node '+d.name;})
-          .attr("transform", "translate(" + (width/2) + "," + (height/2) + ")")
-          .attr("r", 0)
-        .transition().delay(function(d,i){ return 50 * i; })
-          .attr("transform", function(d) {return "translate(" + x(d.x) + "," + y(d.y) + ")"; })
-          .attr("r", function(d) { return y(d.r); });
+          .style("left", (width/2)+'px')
+          .style("top", (height/2) + "px")
+          .style("width", 0)
+          .style("height", 0)
+
+    nodes
+          .style("left", function(d) { return x(d.x)+'px'; })
+          .style("top", function(d) { return y(d.y)+'px'; })
+          .style("width", function(d) { return y(d.r)+'px'; })
+          .style("height", function(d) { return y(d.r)+'px'; });
 
   };
 
@@ -61,11 +59,20 @@ var Bubbles = function(){
       return;
     }
 
-    svg.selectAll("circle.node." + d.strategy)
-      .transition()
-        .attr('r', y(bbData[index].r * 1.2))
-      .transition()
-        .attr('r', y(bbData[index].r));
+    svg.selectAll(".node." + d.strategy)
+          .style("left", function(d) { return x(d.x - (d.r * 0.1))+'px'; })
+          .style("top", function(d) { return y(d.y - (d.r * 0.1))+'px'; })
+          .style("width", function(d) { return y(d.r * 1.2)+'px'; })
+          .style("height", function(d) { return y(d.r * 1.2)+'px'; });
+
+    setTimeout(function(){
+        svg.selectAll(".node." + d.strategy)
+          .style("left", function(d) { return x(d.x)+'px'; })
+          .style("top", function(d) { return y(d.y)+'px'; })
+          .style("width", function(d) { return y(d.r)+'px'; })
+          .style("height", function(d) { return y(d.r)+'px'; });
+    }, 300);
+
 
   };
   var self=this;

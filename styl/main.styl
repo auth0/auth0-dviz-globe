@@ -84,8 +84,8 @@ body
       .type
         position:absolute
         
-        -webkit-transition:width 0.5s, height 0.5s, left 0.5s, top 0.5s;
-        transition:width 0.5s, height 0.5s, left 0.5s, top 0.5s;
+        -webkit-transition:width 0.5s, height 0.5s, left 0.5s, top 0.5s
+        transition:width 0.5s, height 0.5s, left 0.5s, top 0.5s
         
         &.signup
           background: transparent url('../img/bar_green.png')
@@ -101,30 +101,37 @@ body
 
         
 .bubbles
+  position:relative
+  
   .node
+    -webkit-transition:width 0.25s, height 0.25s, left 0.25s, top 0.25s
+    transition:width 0.25s, height 0.25s, left 0.25s, top 0.25s
+    position:absolute
+    border-radius:50%
+        
     &.facebook
-      fill:#465F95
+      background:#465F95
     &.googlePlus
-      fill:#BA4C3A
+      background:#BA4C3A
     &.wordpress
-      fill:#464646
+      background:#464646
     &.github
-      fill:#353535
+      background:#353535
     &.instagram
-      fill:#6081A1
+      background:#6081A1
     &.linkedin
-      fill:#487EB3
+      background:#487EB3
     &.twitter
-      fill:#60A0FC
+      background:#60A0FC
     &.dropbox
-      fill:#609EE6
+      background:#609EE6
     &.tumblr
-      fill:#6086B4
+      background:#6086B4
     &.blogger
-      fill:#DF6019
+      background:#DF6019
     &.yahoo
-      fill:#5B216C
+      background:#5B216C
     &.soundcloud
-      fill:#E0631F
+      background:#E0631F
       
    

@@ -91,39 +91,48 @@ body {
 .equalizer .content .col .type.resetPassword {
   background: transparent url("../img/bar_purple.png");
 }
+.bubbles {
+  position: relative;
+}
+.bubbles .node {
+  -webkit-transition: width 0.25s, height 0.25s, left 0.25s, top 0.25s;
+  transition: width 0.25s, height 0.25s, left 0.25s, top 0.25s;
+  position: absolute;
+  border-radius: 50%;
+}
 .bubbles .node.facebook {
-  fill: #465f95;
+  background: #465f95;
 }
 .bubbles .node.googlePlus {
-  fill: #ba4c3a;
+  background: #ba4c3a;
 }
 .bubbles .node.wordpress {
-  fill: #464646;
+  background: #464646;
 }
 .bubbles .node.github {
-  fill: #353535;
+  background: #353535;
 }
 .bubbles .node.instagram {
-  fill: #6081a1;
+  background: #6081a1;
 }
 .bubbles .node.linkedin {
-  fill: #487eb3;
+  background: #487eb3;
 }
 .bubbles .node.twitter {
-  fill: #60a0fc;
+  background: #60a0fc;
 }
 .bubbles .node.dropbox {
-  fill: #609ee6;
+  background: #609ee6;
 }
 .bubbles .node.tumblr {
-  fill: #6086b4;
+  background: #6086b4;
 }
 .bubbles .node.blogger {
-  fill: #df6019;
+  background: #df6019;
 }
 .bubbles .node.yahoo {
-  fill: #5b216c;
+  background: #5b216c;
 }
 .bubbles .node.soundcloud {
-  fill: #e0631f;
+  background: #e0631f;
 }
