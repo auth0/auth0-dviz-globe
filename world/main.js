@@ -18,23 +18,6 @@ function init()
 	// SCENE
 	scene = new THREE.Scene();
 
-
-	ratamahatta = new THREEx.MD2CharacterRatmahatta()
-
-	ratamahatta.character.object3d.position.set(0,0,150);
-	ratamahatta.character.object3d.lookAt(new THREE.Vector3(0,0,0));
-	ratamahatta.character.object3d.rotateOnAxis (new THREE.Vector3(1,0,0), -90)
-
-	setTimeout(function(){ratamahatta.setAnimationName("jump")},
-		2000);
-
-	scene.add(ratamahatta.character.object3d);
-
-	onRenderFcts.push(function(delta){
-		ratamahatta.update(delta)
-	})
-
-
 	// CAMERA
 	var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
 	var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
@@ -174,6 +157,20 @@ function init()
 	
     renderer.autoClear = false;
     renderer.setClearColor(0x000000, 0.0);
+
+    ratamahatta = new THREEx.MD2CharacterRatmahatta()
+
+	ratamahatta.character.object3d.position.set(0,0,105);
+	ratamahatta.character.object3d.lookAt(new THREE.Vector3(0,0,0));
+	ratamahatta.character.object3d.rotateOnAxis (new THREE.Vector3(1,0,0), -90)
+
+	scene.add(ratamahatta.character.object3d);
+
+	setTimeout(function(){ratamahatta.setAnimationName("jump")},2000);
+
+	onRenderFcts.push(function(delta){
+		ratamahatta.update(delta)
+	})
 }
 
 function animate(nowMsec) 

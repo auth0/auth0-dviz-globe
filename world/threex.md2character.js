@@ -16,7 +16,7 @@ var THREEx	= THREEx || {}
  * @class
 */
 THREEx.MD2Character	= function(){
-	this.scale		= 1;//100/49;
+	this.scale		= 10/49;//100/49;
 	this.animationFPS	= 6;
 
 	this.object3d		= new THREE.Object3D();
