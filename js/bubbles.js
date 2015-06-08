@@ -3,6 +3,9 @@ var Bubbles = function(){
   var width = window.innerWidth,
       height=width / 1.85;
 
+  var bubbleGrowOnEvent = 1.4;
+  var deltaMoveOnEvent = (bubbleGrowOnEvent - 1) / 2;
+
   var timeout = 30 /* seconds */* 1000;
 
   var svg = d3.select(".bubbles")//.append("svg")
@@ -58,10 +61,10 @@ var Bubbles = function(){
     }
 
     svg.selectAll(".node." + d.strategy)
-          .style("left", function(d) { return x(d.x - (d.r * 0.1))+'px'; })
-          .style("top", function(d) { return y(d.y - (d.r * 0.1))+'px'; })
-          .style("width", function(d) { return y(d.r * 1.2)+'px'; })
-          .style("height", function(d) { return y(d.r * 1.2)+'px'; });
+          .style("left", function(d) { return x(d.x - (d.r * deltaMoveOnEvent))+'px'; })
+          .style("top", function(d) { return y(d.y - (d.r * deltaMoveOnEvent))+'px'; })
+          .style("width", function(d) { return y(d.r * bubbleGrowOnEvent)+'px'; })
+          .style("height", function(d) { return y(d.r * bubbleGrowOnEvent)+'px'; });
 
     setTimeout(function(){
         svg.selectAll(".node." + d.strategy)
