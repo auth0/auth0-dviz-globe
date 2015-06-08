@@ -97,8 +97,8 @@ function init()
 
 	var sphereGeo = new THREE.SphereGeometry(100, 32, 16);
     
-	var moonTexture = THREE.ImageUtils.loadTexture( 'world/model/earth.jpg' );
-	var bumpTexture = THREE.ImageUtils.loadTexture( 'world/model/high-bump.jpg' );
+	var moonTexture = THREE.ImageUtils.loadTexture( 'world/model/earth-compresed.jpg' );
+	var bumpTexture = THREE.ImageUtils.loadTexture( 'world/model/high-bump-compresed.jpg' );
 	var moonMaterial = new THREE.MeshBasicMaterial( { 
 		map: moonTexture,
 		bumpMap:     bumpTexture,
