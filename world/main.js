@@ -1,15 +1,16 @@
-// MAIN
-
-// standard global variables
-var container, scene, camera, renderer, controls, stats;
+var container, renderer, controls, stats;
+var scene, atmosphereScene;
+var camera, camera2;
 var keyboard = new THREEx.KeyboardState();
 var clock = new THREE.Clock();
-// custom global variables
 var cube;
+var debug = false;
 
 var ratamahatta, onRenderFcts = [];
+
 var mapEnabled = true;
 var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
 
 init();
 animate();
@@ -24,52 +25,54 @@ function mapScroll(ev){
 	}
 }
 
-
-// FUNCTIONS 		
 function init() 
 {
 	container = document.getElementById( 'container3js' );
 	container.style.height = SCREEN_HEIGHT + "px";
 
-	// SCENE
 	scene = new THREE.Scene();
-
-	// CAMERA
-	var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+	atmosphereScene = new THREE.Scene();
 
 	camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
 	camera2 = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+
+	camera2.position = camera.position;
+	camera2.rotation = camera.rotation;	
+
 	scene.add(camera);
+	atmosphereScene.add(camera2);
+
 	camera.position.set(0,150,400);
 	camera.lookAt(scene.position);	
-	// RENDERER
+
 	if ( Detector.webgl )
 		renderer = new THREE.WebGLRenderer( {antialias:true} );
 	else
 		renderer = new THREE.CanvasRenderer(); 
+
 	renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	container.appendChild( renderer.domElement );
-	// EVENTS
+
 	THREEx.WindowResize(renderer, camera);
 	THREEx.WindowResize(renderer, camera2);
 
-	THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0) });
-	// CONTROLS
 	controls = new THREE.OrbitControls( camera, renderer.domElement );
 
 	controls.minDistance = 400;
 	controls.maxDistance = 400; //200 for zoomed
 
-	// STATS
-	stats = new Stats();
-	stats.domElement.style.position = 'absolute';
-	stats.domElement.style.bottom = '0px';
-	stats.domElement.style.zIndex = 100;
-	container.appendChild( stats.domElement );
-	// LIGHT
+	if (debug) {
+		stats = new Stats();
+		stats.domElement.style.position = 'absolute';
+		stats.domElement.style.bottom = '0px';
+		stats.domElement.style.zIndex = 100;
+		container.appendChild( stats.domElement );
+	}
+
 	var light = new THREE.PointLight(0xffffff);
-	light.position.set(0,250,0);
+	light.position.set(0,0,250);
 	scene.add(light);
+
 	
 	var imagePrefix = "world/images/nebula-";
 	var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
@@ -92,12 +95,6 @@ function init()
 	var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
 	scene.add( skyBox );
 
-	////////////
-	// CUSTOM //
-	////////////
-	
-	// create custom material from the shader code above
-	//   that is within specially labeled script tags
 	
 	var customMaterialAtmosphere = new THREE.ShaderMaterial( 
 	{
@@ -112,42 +109,27 @@ function init()
 
 	var sphereGeo = new THREE.SphereGeometry(100, 32, 16);
     
-	var moonTexture = THREE.ImageUtils.loadTexture( 'world/model/earth-compresed.jpg' );
+	var earthTexture = THREE.ImageUtils.loadTexture( 'world/model/earth-compresed.jpg' );
 	var bumpTexture = THREE.ImageUtils.loadTexture( 'world/model/high-bump-compresed.jpg' );
-	var moonMaterial = new THREE.MeshBasicMaterial( { 
-		map: moonTexture,
+	var earthMaterial = new THREE.MeshBasicMaterial( { 
+		map: earthTexture,
 		bumpMap:     bumpTexture,
         bumpScale:   1
 	} );
-    var moon = new THREE.Mesh(sphereGeo, moonMaterial);
-    scene.add(moon);
-	
-	// create secondary scene to add atmosphere effect
-	
-	atmosphereScene = new THREE.Scene();
-	
-	camera2.position = camera.position;
-	camera2.rotation = camera.rotation;	
-	atmosphereScene.add( camera2 );
+    var earth = new THREE.Mesh(sphereGeo, earthMaterial);
+    scene.add(earth);
 	
 	var mesh = new THREE.Mesh( sphereGeo.clone(), customMaterialAtmosphere );
 	mesh.scale.x = mesh.scale.y = mesh.scale.z = 1.2;
-	// atmosphere should provide light from behind the sphere, so only render the back side
+
 	mesh.material.side = THREE.BackSide;
 	atmosphereScene.add(mesh);
 	
-	// clone earlier sphere geometry to block light correctly
-	// and make it a bit smaller so that light blends into surface a bit
 	var blackMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} ); 
 	var sphere = new THREE.Mesh(sphereGeo.clone(), blackMaterial);
 	sphere.scale.x = sphere.scale.y = sphere.scale.z = 1;
 	atmosphereScene.add(sphere);
 	
-	////////////////////////////////////////////////////////////////////////
-	// final composer will blend composer2.render() results with the scene 
-	////////////////////////////////////////////////////////////////////////
-	
-	// prepare secondary composer
 	var renderTargetParameters = 
 		{ minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, 
 		  format: THREE.RGBFormat, stencilBuffer: false };
@@ -173,6 +155,8 @@ function init()
     renderer.autoClear = false;
     renderer.setClearColor(0x000000, 0.0);
 
+
+//add character
     ratamahatta = new THREEx.MD2CharacterRatmahatta()
 
 	ratamahatta.character.object3d.position.set(0,0,105);
@@ -211,7 +195,7 @@ function update(nowMsec)
 		onRenderFct(deltaMsec/1000, nowMsec/1000)
 	})
 
-	stats.update();
+	if (debug) stats.update();
 }
 
 function render() 
