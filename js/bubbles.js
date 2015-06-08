@@ -41,15 +41,7 @@ var Bubbles = function(){
           .enter()
         .append('div')
           .attr('class', function(d) { return 'node '+d.name;});
-
-    setTimeout(function(){
-      svg.selectAll("div.node")
-          .style("left", function(d) { return x(d.x)+'px'; })
-          .style("top", function(d) { return y(d.y)+'px'; })
-          .style("width", function(d) { return y(d.r)+'px'; })
-          .style("height", function(d) { return y(d.r)+'px'; });
-        }, 500);
-
+          
   };
 
   this.pushData = function(d) {
@@ -76,12 +68,25 @@ var Bubbles = function(){
 
 
   };
+
+  function showBubbles() {
+    svg.selectAll("div.node")
+          .style("left", function(d) { return x(d.x)+'px'; })
+          .style("top", function(d) { return y(d.y)+'px'; })
+          .style("width", function(d) { return y(d.r)+'px'; })
+          .style("height", function(d) { return y(d.r)+'px'; });
+  }
+
   var self=this;
-  this.initialized = false;
-  this.init = function(){
-    if (self.initialized) return;
-    self.initialized = true;
-    loadData();
+
+  loadData();
+
+
+  this.visible = false;
+  this.show = function(){
+    if (self.visible) return;
+    self.visible = true;
+    showBubbles();
   }
 
 };

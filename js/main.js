@@ -15,7 +15,7 @@ d3.json("http://metrics.it.auth0.com/counters", function(err, data) {
 
 channel.bind('login', function(data) {
 
-    if (bubbles.initialized) bubbles.pushData(data);
+    if (bubbles.visible) bubbles.pushData(data);
     equalizer.pushData(data, 'login');
 
     if (Math.random() > 0.4) equalizer.pushData(data, 'signup');
@@ -40,10 +40,10 @@ function updateCounters(){
 }
 
 function testScroll(ev){
-  if(!bubbles.initialized){
+  if(!bubbles.visible){
     var bubblesPosition = document.getElementById('bubbles').getBoundingClientRect();
     if(window.pageYOffset >= bubblesPosition.top) {
-      bubbles.init();
+      bubbles.show();
     }
   }
 }
