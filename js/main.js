@@ -6,6 +6,8 @@ var channel = pusher.subscribe('world_map');
 
 var loginCount = 0;
 var counters = null;
+var renderEq = false;
+var renderBubbles = false;
 
 d3.json("http://metrics.it.auth0.com/counters", function(err, data) {
   counters = data;
@@ -15,7 +17,7 @@ d3.json("http://metrics.it.auth0.com/counters", function(err, data) {
 
 channel.bind('login', function(data) {
 
-    if (bubbles.visible) bubbles.pushData(data);
+    if (bubbles.visible && renderBubbles) bubbles.pushData(data);
 
     equalizer.pushData(data, 'login');
 
@@ -28,7 +30,7 @@ channel.bind('login', function(data) {
 });
 
 function renderData() {
-  equalizer.updateData();
+  if (renderEq) equalizer.updateData();
   updateCounters();
   setTimeout( renderData , 500 + 500 * Math.random());
 }
@@ -39,13 +41,28 @@ function updateCounters(){
   d3.select('.apps .counter').html(counters.apps);
 }
 
+function bubblesScroll(ev) {
+  var top = window.innerHeight + 300 + 420;
+  var viewportBottom = getViewportBottom();
+
+  if(!bubbles.visible && viewportBottom >= top) {
+      bubbles.show();
+  }
+  else
+  {
+    renderBubbles = viewportBottom >= SCREEN_HEIGHT;
+  }
+}
+function eqScroll(ev) {
+  var top = window.innerHeight + 300;
+  renderEq = (getViewportBottom() >= top);
+}
+function getViewportBottom() {
+  return window.pageYOffset + window.innerHeight;
+}
 function testScroll(ev){
   mapScroll(ev);
-  if(!bubbles.visible){
-    var bubblesPosition = document.getElementById('bubbles').getBoundingClientRect();
-    if(window.pageYOffset >= bubblesPosition.top) {
-      bubbles.show();
-    }
-  }
+  bubblesScroll(ev);
+  eqScroll(ev);
 }
 window.onscroll=testScroll;

@@ -50,12 +50,6 @@ var Bubbles = function(){
 
   this.pushData = function(d) {
 
-    // var index = _.findIndex(bbData, function(e) {return e.name.toLowerCase() == d.strategy.toLowerCase();});
-
-    // if (index === -1) {    
-    //   return;
-    // }
-
     if (validStrategies[d.strategy.toLowerCase()] === undefined) return;
 
     svg.selectAll(".node." + d.strategy)
