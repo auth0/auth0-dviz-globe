@@ -8,19 +8,35 @@ var clock = new THREE.Clock();
 var cube;
 
 var ratamahatta, onRenderFcts = [];
+var mapEnabled = true;
+var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
 
 init();
 animate();
 
+function mapScroll(ev){
+	if(window.pageYOffset > SCREEN_HEIGHT) {
+		mapEnabled = false;	
+	}
+	else if (!mapEnabled) {
+		mapEnabled = true;
+		animate();
+	}
+}
+
+
 // FUNCTIONS 		
 function init() 
 {
+	container = document.getElementById( 'container3js' );
+	container.style.height = SCREEN_HEIGHT + "px";
+
 	// SCENE
 	scene = new THREE.Scene();
 
 	// CAMERA
-	var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
 	var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+
 	camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
 	camera2 = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
 	scene.add(camera);
@@ -32,8 +48,6 @@ function init()
 	else
 		renderer = new THREE.CanvasRenderer(); 
 	renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-	container = document.getElementById( 'container3js' );
-	container.style.height = SCREEN_HEIGHT + "px";
 	container.appendChild( renderer.domElement );
 	// EVENTS
 	THREEx.WindowResize(renderer, camera);
@@ -176,7 +190,9 @@ function init()
 
 function animate(nowMsec) 
 {
-    requestAnimationFrame( animate );
+	if (mapEnabled){
+		requestAnimationFrame( animate );
+	}
 	render();		
 	update(nowMsec);
 }

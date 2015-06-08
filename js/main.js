@@ -10,36 +10,37 @@ var counters = null;
 d3.json("http://metrics.it.auth0.com/counters", function(err, data) {
   counters = data;
   updateCounters();
-  renderEq();
+  renderData();
 })
 
 channel.bind('login', function(data) {
 
     if (bubbles.visible) bubbles.pushData(data);
+
     equalizer.pushData(data, 'login');
 
-    if (Math.random() > 0.4) equalizer.pushData(data, 'signup');
-    if (Math.random() > 0.05) equalizer.pushData(data, 'resetPassword');
-    if (Math.random() > 0.025) equalizer.pushData(data, 'suspicious');
+    var randomValue = Math.random();
+    if (randomValue > 0.325) equalizer.pushData(data, 'signup');
+    if (randomValue > 0.05) equalizer.pushData(data, 'resetPassword');
+    if (randomValue > 0.025) equalizer.pushData(data, 'suspicious');
 
     loginCount++;
-
-    updateCounters();
-
 });
 
-function renderEq() {
+function renderData() {
   equalizer.updateData();
-  setTimeout( renderEq , 500 + 500 * Math.random());
+  updateCounters();
+  setTimeout( renderData , 500 + 500 * Math.random());
 }
 
 function updateCounters(){
-	d3.select('.tokens .counter').html(counters.tokens);
+  d3.select('.tokens .counter').html(counters.tokens);
   d3.select('.logins .counter').html(counters.logins + loginCount);
   d3.select('.apps .counter').html(counters.apps);
 }
 
 function testScroll(ev){
+  mapScroll(ev);
   if(!bubbles.visible){
     var bubblesPosition = document.getElementById('bubbles').getBoundingClientRect();
     if(window.pageYOffset >= bubblesPosition.top) {
@@ -47,4 +48,4 @@ function testScroll(ev){
     }
   }
 }
-window.onscroll=testScroll
+window.onscroll=testScroll;

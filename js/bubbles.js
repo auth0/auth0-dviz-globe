@@ -30,6 +30,10 @@ var Bubbles = function(){
     {name: 'yahoo'      , r: 12, x: 105, y:95},
     {name: 'soundcloud' , r: 20, x: 125, y:70}
   ];
+  var validStrategies = {};
+  bbData.forEach(function(d){
+    validStrategies[d.name] = 1;
+  });
 
   function loadData() {
 
@@ -46,11 +50,13 @@ var Bubbles = function(){
 
   this.pushData = function(d) {
 
-    var index = _.findIndex(bbData, function(e) {return e.name.toLowerCase() == d.strategy.toLowerCase();});
+    // var index = _.findIndex(bbData, function(e) {return e.name.toLowerCase() == d.strategy.toLowerCase();});
 
-    if (index === -1) {    
-      return;
-    }
+    // if (index === -1) {    
+    //   return;
+    // }
+
+    if (validStrategies[d.strategy.toLowerCase()] === undefined) return;
 
     svg.selectAll(".node." + d.strategy)
           .style("left", function(d) { return x(d.x - (d.r * deltaMoveOnEvent))+'px'; })
