@@ -21,13 +21,13 @@ THREEx.MD2Character	= function(meshBody){
 
 	this.object3d		= new THREE.Object3D();
 	
-	if (object3d) {
+	if (meshBody) {
 		this.isMeshInitialized = true;
 		this.meshBody		= meshBody;
 	}
 	else {
 		this.isMeshInitialized = false;
-		this.meshBody		= null;
+		this.meshBody			= null;
 	}
 
 	this.texturesBody	= [];

@@ -9,6 +9,7 @@ var charactersGroup = new THREE.Object3D();
 var ratamahatta = null;
 
 var onRenderFcts = [];
+var charactersArray = [];
 
 var mapEnabled = true;
 var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
@@ -195,11 +196,13 @@ function addCharacter(lat,lng) {
 	},500);
 	setTimeout(function(){
 		charactersGroup.remove( character );
+
+		var index = charactersArray.indexOf(newRatamahatta);
+		console.log("remove", index)
+		charactersArray.splice(index, 1);
 	},2000);
 
-	onRenderFcts.push(function(delta){
-		newRatamahatta.update(delta)
-	})
+	charactersArray.push(newRatamahatta);
 }
 
 function animate(nowMsec) 
@@ -223,6 +226,9 @@ function update(nowMsec)
 
 	onRenderFcts.forEach(function(onRenderFct){
 		onRenderFct(deltaMsec/1000, nowMsec/1000)
+	})
+	charactersArray.forEach(function(character){
+		character.update(deltaMsec/1000)
 	})
 
 	if (debug) stats.update();
