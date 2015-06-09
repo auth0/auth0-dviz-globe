@@ -9,6 +9,8 @@ var counters = null;
 var renderEq = false;
 var renderBubbles = false;
 
+var numberFormat = d3.format(",");
+
 d3.json("http://metrics.it.auth0.com/counters", function(err, data) {
   counters = data;
   updateCounters();
@@ -38,9 +40,9 @@ function renderData() {
 }
 
 function updateCounters(){
-  d3.select('.tokens .counter').html(counters.tokens);
-  d3.select('.logins .counter').html(counters.logins + loginCount);
-  d3.select('.apps .counter').html(counters.apps);
+  d3.select('.tokens .counter').html(numberFormat(counters.tokens));
+  d3.select('.logins .counter').html(numberFormat(counters.logins + loginCount));
+  d3.select('.apps .counter').html(numberFormat(counters.apps));
 }
 
 function bubblesScroll(ev) {

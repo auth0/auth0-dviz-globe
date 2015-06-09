@@ -4,14 +4,15 @@ var Equalizer = function(){
 	
 	var eqData = [];
 
+	var topMargin = 40;
 	var height = 420;
-	var width = window.innerWidth;
+	var width = window.innerWidth - 100;
 	var browserIcon = 70;
 	var barsHeight = height - browserIcon;
 	var backgroundLineHeight = 7;
 
 	var eq = d3.select('.equalizer')
-			.style('height', height + 'px');
+			.style('height', (height + topMargin) + 'px');
 
 	var texturesArr = [];
 

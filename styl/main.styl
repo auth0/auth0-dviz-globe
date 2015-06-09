@@ -12,6 +12,14 @@ body
   line-height: 20px
   height: 100%
 
+h2
+  margin:50px
+  font-size:12px
+  font-weight:normal
+  line-height:40px
+  color:#ffffff
+  text-transform:uppercase
+  border-bottom:1px solid rgba(51,51,51,51)
 
 #globe 
   position:relative
@@ -48,18 +56,69 @@ body
       &:hover
         font-weight: bold
 
+.counters
+  margin:50px
 
-.counters article 
-  width: 30%
-  margin:auto
+  article 
+    width: 30%
+    margin:auto
+    
+    header
+      border-bottom:1px solid;
+      text-transform:uppercase
+      line-height: 40px;
+    
+    .counter
+      font-size: 40px;
+      
+    .body
+      color:#A1A09D
+      
+    &.tokens 
+      float:left
+      
+      header
+        color:#82DA7D
+        border-color:#82DA7D
 
-  &.tokens 
-    float:left
-
-  &.logins 
-    float:right
+    &.logins 
+      
+      header
+        color:#C8D34D
+        border-color:#C8D34D
+      
+    &.apps
+      float:right
+      
+      header
+        color:#80D3C9
+        border-color:#80D3C9
 
 .equalizer
+  margin:0 50px
+  
+  .references
+    text-align: center
+    margin-bottom:15px
+      
+    span
+      margin: 0 20px
+      text-transform:uppercase
+        
+      &.signup
+        color:#88DF82
+      &.login
+        color:#F4E73E
+      &.reset-password
+        color:#C449FB
+      &.bloqued
+        color:#DE4C4A
+      
+      &:before
+        content: '\2588'
+        padding-right:15px
+        font-size: 7px
+        vertical-align: top
   
   .content 
     position:relative

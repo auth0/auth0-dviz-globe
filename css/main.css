@@ -11,6 +11,15 @@ body {
   line-height: 20px;
   height: 100%;
 }
+h2 {
+  margin: 50px;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 40px;
+  color: #fff;
+  text-transform: uppercase;
+  border-bottom: 1px solid #333;
+}
 #globe {
   position: relative;
 }
@@ -44,15 +53,70 @@ body {
 #filter ul li:hover {
   font-weight: bold;
 }
+.counters {
+  margin: 50px;
+}
 .counters article {
   width: 30%;
   margin: auto;
 }
+.counters article header {
+  border-bottom: 1px solid;
+  text-transform: uppercase;
+  line-height: 40px;
+}
+.counters article .counter {
+  font-size: 40px;
+}
+.counters article .body {
+  color: #a1a09d;
+}
 .counters article.tokens {
   float: left;
 }
-.counters article.logins {
+.counters article.tokens header {
+  color: #82da7d;
+  border-color: #82da7d;
+}
+.counters article.logins header {
+  color: #c8d34d;
+  border-color: #c8d34d;
+}
+.counters article.apps {
   float: right;
+}
+.counters article.apps header {
+  color: #80d3c9;
+  border-color: #80d3c9;
+}
+.equalizer {
+  margin: 0 50px;
+}
+.equalizer .references {
+  text-align: center;
+  margin-bottom: 15px;
+}
+.equalizer .references span {
+  margin: 0 20px;
+  text-transform: uppercase;
+}
+.equalizer .references span.signup {
+  color: #88df82;
+}
+.equalizer .references span.login {
+  color: #f4e73e;
+}
+.equalizer .references span.reset-password {
+  color: #c449fb;
+}
+.equalizer .references span.bloqued {
+  color: #de4c4a;
+}
+.equalizer .references span:before {
+  content: '\2588';
+  padding-right: 15px;
+  font-size: 7px;
+  vertical-align: top;
 }
 .equalizer .content {
   position: relative;

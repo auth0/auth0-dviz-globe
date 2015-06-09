@@ -6,7 +6,6 @@
     <link href="css/main.css" rel="stylesheet" />
   </head>
   <body>
-    <!-- ------ Custom Shader Code for atmospheric glow ------ -->
     <script id="vertexShaderAtmosphere" type="x-shader/x-vertex">
       varying vec3 vNormal;
       void main() 
@@ -15,7 +14,6 @@
           gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
       }
     </script>
-    <!-- fragment shader a.k.a. pixel shader -->
     <script id="fragmentShaderAtmosphere" type="x-shader/x-vertex"> 
       uniform float c;
       uniform float p;
@@ -26,7 +24,6 @@
         gl_FragColor = vec4( 0.5, 1.0, 1.0, 1.0 ) * intensity;
       }
     </script>
-    <!-- ----------------------------------------------------------- -->
 
     <div id="globe">
       <div id="filter">
@@ -48,26 +45,40 @@
     <div class="counters">
       
       <article class="tokens">
-          <header>Tokens generated</header>
-          <p class="counter">#######</p>
+          <header>Total tokens</header>
+          <p class="counter"></p>
+          <p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ultrices risus et molestie facilisis. Donec felis lorem, porta sed elit nec, convallis consequat nulla. Aliquam a sagittis ipsum. Duis vel consectetur libero, et ultricies lorem. Curabitur in malesuada sem, at finibus mauris</p>
+      </article>
+
+
+
+      <article class="apps">
+          <header>Applications running Auth0</header>
+          <p class="counter"></p>
           <p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ultrices risus et molestie facilisis. Donec felis lorem, porta sed elit nec, convallis consequat nulla. Aliquam a sagittis ipsum. Duis vel consectetur libero, et ultricies lorem. Curabitur in malesuada sem, at finibus mauris</p>
       </article>
 
       <article class="logins">
-          <header>Logins</header>
-          <p class="counter">#######</p>
-          <p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ultrices risus et molestie facilisis. Donec felis lorem, porta sed elit nec, convallis consequat nulla. Aliquam a sagittis ipsum. Duis vel consectetur libero, et ultricies lorem. Curabitur in malesuada sem, at finibus mauris</p>
-      </article>
-
-      <article class="apps">
-          <header>Apps Created</header>
-          <p class="counter">#######</p>
+          <header>Total logins</header>
+          <p class="counter"></p>
           <p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ultrices risus et molestie facilisis. Donec felis lorem, porta sed elit nec, convallis consequat nulla. Aliquam a sagittis ipsum. Duis vel consectetur libero, et ultricies lorem. Curabitur in malesuada sem, at finibus mauris</p>
       </article>
 
     </div>
 
-    <div class="equalizer" id="equalizer"></div>
+    <h2>Browsers</h2>
+
+    <div class="equalizer" id="equalizer">
+      <div class="references">
+        <span class="signup">Sign up</span>
+        <span class="login">Login</span>
+        <span class="reset-password">Reset password</span>
+        <span class="bloqued">Blocked / Suspicious</span>
+      </div>
+    </div>
+
+    <h2>Integrations</h2>
+
     <div class="bubbles" id="bubbles"></div>
 
     <script src="https://js.pusher.com/2.2/pusher.min.js"></script>
