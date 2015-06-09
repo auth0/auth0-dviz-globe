@@ -13,7 +13,7 @@ THREEx.MD2CharacterControls	= function(object3d, inputs){
 	this.inputs	= inputs	|| {
 		right	: false,
 		left	: false,
-		up	: false,
+		up		: false,
 		down	: false,
 	}
 	inputs		= this.inputs

@@ -5,8 +5,10 @@ var keyboard = new THREEx.KeyboardState();
 var clock = new THREE.Clock();
 var cube;
 var debug = false;
+var charactersGroup = new THREE.Object3D();
+var ratamahatta = null;
 
-var ratamahatta, onRenderFcts = [];
+var onRenderFcts = [];
 
 var mapEnabled = true;
 var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
@@ -42,6 +44,8 @@ function init()
 	scene.add(camera);
 	atmosphereScene.add(camera2);
 
+	ratamahatta = new THREEx.MD2CharacterRatmahatta();
+
 	camera.position.set(0,150,400);
 	camera.lookAt(scene.position);	
 
@@ -69,9 +73,12 @@ function init()
 		container.appendChild( stats.domElement );
 	}
 
-	var light = new THREE.PointLight(0xffffff);
-	light.position.set(0,0,250);
-	scene.add(light);
+	// var light = new THREE.PointLight(0xffffff);
+	// light.position.set(0,0,250);
+	// scene.add(light);
+
+	var light = new THREE.AmbientLight( 0xFFFFFF ); // soft white light
+	scene.add( light );
 
 	
 	var imagePrefix = "world/images/nebula-";
@@ -155,20 +162,43 @@ function init()
     renderer.autoClear = false;
     renderer.setClearColor(0x000000, 0.0);
 
+    scene.add(charactersGroup);
+   
+}
 
-//add character
-    ratamahatta = new THREEx.MD2CharacterRatmahatta()
+function addCharacter(lat,lng) {
+	var phi = (90 - lat) * Math.PI / 180;
+    var theta = (-1 * lng) * Math.PI / 180;
 
-	ratamahatta.character.object3d.position.set(0,0,105);
-	ratamahatta.character.object3d.lookAt(new THREE.Vector3(0,0,0));
-	ratamahatta.character.object3d.rotateOnAxis (new THREE.Vector3(1,0,0), -90)
+    // var hover = 15 * (1 + Math.random() * 0.2) ;
+    // var weight = (hover - size * 3);
+    // var radius = 200 + (weight < 0 ? 0 : weight);
+    var radius = 105;
 
-	scene.add(ratamahatta.character.object3d);
+    var x = radius * Math.sin(phi) * Math.cos(theta);
+	var y = radius * Math.cos(phi);
+	var z = radius * Math.sin(phi) * Math.sin(theta);
 
-	setTimeout(function(){ratamahatta.setAnimationName("jump")},2000);
+	var newRatamahatta = new THREEx.MD2CharacterRatmahatta( null, ratamahatta.character.meshBody.clone());
+
+	var character = newRatamahatta.character.object3d;
+	
+	character.position.set(x,y,z);
+
+	character.lookAt(new THREE.Vector3(x,y,z));
+	character.rotateOnAxis (new THREE.Vector3(1,0,0), 45)
+
+	charactersGroup.add(character);
+
+	setTimeout(function(){
+		newRatamahatta.setAnimationName("jump")
+	},500);
+	setTimeout(function(){
+		charactersGroup.remove( character );
+	},2000);
 
 	onRenderFcts.push(function(delta){
-		ratamahatta.update(delta)
+		newRatamahatta.update(delta)
 	})
 }
 
@@ -184,7 +214,7 @@ function animate(nowMsec)
 var lastTimeMsec= null;
 function update(nowMsec)
 {
-	controls.rotateLeft(0.001);
+	// controls.rotateLeft(0.001);
 	controls.update();
 
 	lastTimeMsec	= lastTimeMsec || nowMsec-1000/60

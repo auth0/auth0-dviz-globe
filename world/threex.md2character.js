@@ -15,19 +15,22 @@ var THREEx	= THREEx || {}
  * @name THREEx.MD2Character
  * @class
 */
-THREEx.MD2Character	= function(){
+THREEx.MD2Character	= function(meshBody){
 	this.scale		= 10/49;//100/49;
 	this.animationFPS	= 6;
 
 	this.object3d		= new THREE.Object3D();
-
-	this.meshBody		= null;
-	this.meshWeapon		= null;
+	
+	if (object3d) {
+		this.isMeshInitialized = true;
+		this.meshBody		= meshBody;
+	}
+	else {
+		this.isMeshInitialized = false;
+		this.meshBody		= null;
+	}
 
 	this.texturesBody	= [];
-	this.texturesWeapon	= [];
-
-	this._weapons		= [];
 
 	this._curAnimation	= null;
 	this.nLoadInProgress	= 0;
@@ -96,9 +99,6 @@ THREEx.MD2Character.prototype.update	= function( delta ){
 			this.dispatchEvent("animationCompleted", this, this._curAnimation)
 		}
 	}
-	if ( this.meshWeapon ) {
-		this.meshWeapon.updateAnimation( 1000 * delta );
-	}
 	return this;	// for chained API
 };
 
@@ -121,37 +121,8 @@ THREEx.MD2Character.prototype.setWireframe = function( enable ){
 	// TODO remove the added property on THREE.Mesh
 	if( enable ){
 		if ( this.meshBody )	this.meshBody.material	= this.meshBody.materialWireframe;
-		if ( this.meshWeapon )	this.meshWeapon.material= this.meshWeapon.materialWireframe;
 	} else {
 		if ( this.meshBody )	this.meshBody.material	= this.meshBody.materialTexture;
-		if ( this.meshWeapon )	this.meshWeapon.material= this.meshWeapon.materialTexture;
-	}
-	return this;	// for chained API
-};
-
-/**
- * Set the weapons
- *
- * @param {Number} index the index of the animations
-*/
-THREEx.MD2Character.prototype.setWeapon = function( index ){
-	// make all weapons invisible
-	for ( var i = 0; i < this._weapons.length; i ++ ){
-		this._weapons[ i ].visible = false;
-	}
-	// set the active weapon
-	var activeWeapon = this._weapons[ index ];
-
-	if( activeWeapon ){
-		activeWeapon.visible	= true;
-		this.meshWeapon		= activeWeapon;
-
-		activeWeapon.playAnimation( this._curAnimation, this.animationFPS );
-
-		this.meshWeapon.baseDuration	= this.meshWeapon.duration;
-
-		this.meshWeapon.time		= this.meshBody.time;
-		this.meshWeapon.duration	= this.meshBody.duration;
 	}
 	return this;	// for chained API
 };
@@ -170,6 +141,7 @@ THREEx.MD2Character.prototype.setAnimation = function( animationName ){
 	if( animationName === this._curAnimation ){
 		return this;	// for chained API
 	}
+
 	// setter on this.meshBody
 	if ( this.meshBody ) {
 		// sanity check
@@ -178,14 +150,7 @@ THREEx.MD2Character.prototype.setAnimation = function( animationName ){
 		this.meshBody.playAnimation( animationName, this.animationFPS );
 		this.meshBody.baseDuration	= this.meshBody.duration;
 	}
-	// setter on this.meshWeapon
-	if ( this.meshWeapon ) {
-		// sanity check
-		console.assert( Object.keys(this.meshWeapon.geometry.animations).indexOf(animationName) !== -1 );
-		this.meshWeapon.playAnimation( animationName, this.animationFPS );
-		this.meshWeapon.baseDuration	= this.meshWeapon.duration;
-		this.meshWeapon.time		= this.meshBody.time;
-	}
+
 	// set the animation itself
 	this._curAnimation = animationName;
 	return this;	// for chained API
@@ -198,9 +163,7 @@ THREEx.MD2Character.prototype.setPlaybackRate	= function( rate ){
 	if ( this.meshBody ){
 		this.meshBody.duration = this.meshBody.baseDuration / rate;
 	}
-	if ( this.meshWeapon ){
-		this.meshWeapon.duration = this.meshWeapon.baseDuration / rate;
-	}
+
 	return this;	// for chained API
 };
 
@@ -224,60 +187,56 @@ THREEx.MD2Character.prototype.setSkin	= function( index ){
 */
 THREEx.MD2Character.prototype.load		= function ( config )
 {
-	this.nLoadInProgress	= config.weapons.length * 2 + config.skins.length + 1;
+	
 
-	var weaponsTextures = []
-	for ( var i = 0; i < config.weapons.length; i ++ ){
-		weaponsTextures[ i ] = config.weapons[ i ][ 1 ];
-	}
+	this.nLoadInProgress	= config.skins.length + 1;
 
 	// SKINS
 	this.texturesBody	= this._loadTextures( config.baseUrl + "skins/", config.skins );
-	this.texturesWeapon	= this._loadTextures( config.baseUrl + "skins/", weaponsTextures );
 
-	// BODY
-	var loader	= new THREE.JSONLoader();
-
-	loader.load( config.baseUrl + config.body, function( geometry ) {
-		geometry.computeBoundingBox();
-
-		var mesh	= createPart( geometry, this.texturesBody[ 0 ] );
-		mesh.scale.set( this.scale, this.scale, this.scale );
-		mesh.position.y	= 0.5
-
-
-		this.object3d.add( mesh );
-
-		this.meshBody		= mesh;
-		this._curAnimation	= geometry.firstAnimation;
-
+	if (this.isMeshInitialized) {
+		this.object3d.add( this.meshBody );
 		this._checkLoadingComplete();
-	}.bind(this));
+	}
+	else {
+		var loader	= new THREE.JSONLoader();
 
-	// WEAPONS
-	var generateCallback = function( index, name ){
-		return function( geometry ) {
-			var mesh	= createPart( geometry, this.texturesWeapon[ index ] );
+		loader.load( config.baseUrl + config.body, function( geometry ) {
+			geometry.computeBoundingBox();
+
+			var mesh	= createPart( geometry, this.texturesBody[ 0 ] );
 			mesh.scale.set( this.scale, this.scale, this.scale );
-			mesh.visible	= false;
 			mesh.position.y	= 0.5
-
-			mesh.name	= name;
 
 			this.object3d.add( mesh );
 
-			this._weapons[ index ] = mesh;
-			this.meshWeapon = mesh;
+			this.meshBody		= mesh;	
+
+			this._curAnimation	= geometry.firstAnimation;
 
 			this._checkLoadingComplete();
-		}.bind(this);
-	}.bind(this);
+		}.bind(this));
 
-	for ( var i = 0; i < config.weapons.length; i ++ ) {
-		var url		= config.baseUrl + config.weapons[ i ][ 0 ];
-		var callback	= generateCallback( i, config.weapons[ i ][ 0 ] );
-		loader.load( url, callback );
-	}
+	}	
+
+	// // WEAPONS
+	// var generateCallback = function( index, name ){
+	// 	return function( geometry ) {
+	// 		var mesh	= createPart( geometry, this.texturesWeapon[ index ] );
+	// 		mesh.scale.set( this.scale, this.scale, this.scale );
+	// 		mesh.visible	= false;
+	// 		mesh.position.y	= 0.5
+
+	// 		mesh.name	= name;
+
+	// 		this.object3d.add( mesh );
+
+	// 		this._weapons[ index ] = mesh;
+	// 		this.meshWeapon = mesh;
+
+	// 		this._checkLoadingComplete();
+	// 	}.bind(this);
+	// }.bind(this);
 
 	function createPart( geometry, skinMap ) {
 		geometry.computeMorphNormals();
@@ -316,7 +275,7 @@ THREEx.MD2Character.prototype.load		= function ( config )
 		mesh.rotation.y = -Math.PI/2;
 
 		mesh.castShadow		= true;
-		mesh.receiveShadow	= true;
+		mesh.receiveShadow	= false;
 
 		//
 

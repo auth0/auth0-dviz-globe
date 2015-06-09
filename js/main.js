@@ -17,6 +17,8 @@ d3.json("http://metrics.it.auth0.com/counters", function(err, data) {
 
 channel.bind('login', function(data) {
 
+    addCharacter(data.geo.lat,data.geo.lng);
+
     if (bubbles.visible && renderBubbles) bubbles.pushData(data);
 
     equalizer.pushData(data, 'login');
