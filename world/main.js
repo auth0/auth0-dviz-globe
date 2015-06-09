@@ -63,7 +63,8 @@ function init()
 
 	controls = new THREE.OrbitControls( camera, renderer.domElement );
 
-	controls.minDistance = 400;
+	// controls.userZoom = false;
+	controls.minDistance = 200;
 	controls.maxDistance = 400; //200 for zoomed
 
 	if (debug) {
@@ -115,7 +116,7 @@ function init()
 		fragmentShader: document.getElementById( 'fragmentShaderAtmosphere' ).textContent
 	}   );
 
-	var sphereGeo = new THREE.SphereGeometry(100, 32, 16);
+	var sphereGeo = new THREE.SphereGeometry(100, 32, 32);
     
 	var earthTexture = THREE.ImageUtils.loadTexture( 'world/model/earth-compresed.jpg' );
 	var bumpTexture = THREE.ImageUtils.loadTexture( 'world/model/high-bump-compresed.jpg' );

@@ -19,6 +19,8 @@ THREE.OrbitControls = function ( object, domElement ) {
 	this.userZoom = true;
 	this.userZoomSpeed = 1.0;
 
+	this.idZoomOnToggle = false;
+
 	this.userRotate = true;
 	this.userRotateSpeed = 1.0;
 
@@ -315,32 +317,22 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	}
 
-	function onMouseWheel( event ) {
+	function onDblClick( event ) {
 
 		if ( scope.enabled === false ) return;
 		if ( scope.userZoom === false ) return;
 
-		var delta = 0;
+		if ( this.idZoomOnToggle ) {
 
-		if ( event.wheelDelta ) { // WebKit / Opera / Explorer 9
-
-			delta = event.wheelDelta;
-
-		} else if ( event.detail ) { // Firefox
-
-			delta = - event.detail;
-
-		}
-
-		if ( delta > 0 ) {
-
-			scope.zoomOut();
+			scope.zoomOut(2);
 
 		} else {
 
-			scope.zoomIn();
+			scope.zoomIn(2);
 
 		}
+
+		this.idZoomOnToggle = !this.idZoomOnToggle;
 
 	}
 
@@ -393,8 +385,9 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	this.domElement.addEventListener( 'contextmenu', function ( event ) { event.preventDefault(); }, false );
 	this.domElement.addEventListener( 'mousedown', onMouseDown, false );
-	this.domElement.addEventListener( 'mousewheel', onMouseWheel, false );
-	this.domElement.addEventListener( 'DOMMouseScroll', onMouseWheel, false ); // firefox
+	this.domElement.addEventListener( 'dblclick',  onDblClick, false );
+	// this.domElement.addEventListener( 'mousewheel', onMouseWheel, false );
+	// this.domElement.addEventListener( 'DOMMouseScroll', onMouseWheel, false ); // firefox
 	window.addEventListener( 'keydown', onKeyDown, false );
 	window.addEventListener( 'keyup', onKeyUp, false );
 
