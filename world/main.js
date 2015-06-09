@@ -198,7 +198,6 @@ function addCharacter(lat,lng) {
 		charactersGroup.remove( character );
 
 		var index = charactersArray.indexOf(newRatamahatta);
-		console.log("remove", index)
 		charactersArray.splice(index, 1);
 	},2000);
 
