@@ -11,6 +11,12 @@ body {
   line-height: 20px;
   height: 100%;
 }
+h1 {
+  color: #fff;
+  text-align: center;
+  font-weight: normal;
+  font-size: 25px;
+}
 h2 {
   margin: 50px;
   font-size: 12px;
@@ -173,7 +179,7 @@ h2 {
   background: #465f95;
 }
 .bubbles .node.googlePlus {
-  background: #ba4c3a;
+  background: #b94b39;
 }
 .bubbles .node.wordpress {
   background: #464646;
@@ -185,7 +191,7 @@ h2 {
   background: #6081a1;
 }
 .bubbles .node.linkedin {
-  background: #487eb3;
+  background: #477db2;
 }
 .bubbles .node.twitter {
   background: #60a0fc;
@@ -203,5 +209,5 @@ h2 {
   background: #5b216c;
 }
 .bubbles .node.soundcloud {
-  background: #e0631f;
+  background: #df631f;
 }
